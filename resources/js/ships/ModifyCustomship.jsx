@@ -10,7 +10,6 @@ export default function ModifyCustomship ({data, setModifying, fetchData})
     const handleChange = (e) => {
         const { name, value } = e.target;
         setValues({ ...values, [name]: value });
-        console.log(values);
     }
 
     const handleSubmit = async (e) => {

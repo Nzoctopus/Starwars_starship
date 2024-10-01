@@ -7,7 +7,6 @@ export default function useSatellite () {
       const result = await fetch(`/api/satellites`);
       const body = await result.json();
       setData(body);
-      console.log("new data arrived");
     }
     
     const fields = [
@@ -28,7 +27,6 @@ export default function useSatellite () {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setValues({ ...values, [name]: value });
-        console.log(values);
     }
 
     const handleSubmit = async (e) => {

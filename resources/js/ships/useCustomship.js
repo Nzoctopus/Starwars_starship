@@ -7,7 +7,6 @@ export default function useCustomship () {
       const result = await fetch(`/api/custom`);
       const body = await result.json();
       setData(body);
-      console.log("new data arrived");
     }
     
 
@@ -46,7 +45,6 @@ export default function useCustomship () {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setValues({ ...values, [name]: value });
-        console.log(values);
     }
 
     const handleSubmit = async (e) => {
