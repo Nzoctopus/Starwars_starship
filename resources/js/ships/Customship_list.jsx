@@ -6,9 +6,9 @@ import ModifyCustomship from './ModifyCustomship.jsx'
 const Customship_list = () => {
   
   const {data, fetchData, handleDelete} = useCustomship();
-
   const [isModifying, setModifying] = useState(false);
-  const toggleModifying = (e) => {
+
+  const toggleModifying = () => {
     setModifying(isModifying ? false : true);
   }
 

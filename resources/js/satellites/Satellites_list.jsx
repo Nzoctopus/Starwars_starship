@@ -4,12 +4,10 @@ import useSatellite from './useSatellite';
 import ModifySatellite from './ModifySatellite';
 
 const CustomSatellites_list = () => {
-  
 
-  const {data, fetchData, handleDelete} = useSatellite();
-  
-  
+  const {data, fetchData, handleDelete} = useSatellite();  
   const [isModifying, setModifying] = useState(false);
+  
   const toggleModifying = (e) => {
     setModifying(isModifying ? false : true);
   }

@@ -7,17 +7,15 @@ export default function ModifyCustomship ({data, setModifying, fetchData})
 
     const [values, setValues] = useState(data)
 
-    console.log(values);
     const handleChange = (e) => {
         const { name, value } = e.target;
         setValues({ ...values, [name]: value });
         console.log(values);
     }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setModifying(false);
-        console.log(`sended`);
-        console.log(values);
         try {
             await axios.post('/modify/customship', values);
         } catch (error) {

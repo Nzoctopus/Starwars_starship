@@ -4,14 +4,11 @@ import useSatellite from "./useSatellite";
 export default function ModifySatellite ({data, setModifying, fetchData})
 {
     const {fields} = useSatellite();
-
     const [values, setValues] = useState(data)
 
-    console.log(values);
     const handleChange = (e) => {
         const { name, value } = e.target;
         setValues({ ...values, [name]: value });
-        console.log(values);
     }
     const handleSubmit = async (e) => {
         e.preventDefault();
