@@ -7,6 +7,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import CustomSatellites_list from './satellites/Satellites_list';
 import AddSatellitePage from './satellites/AddSatellitePage';
 import Starshiplist from './main_page/Starshiplist';
+import Modify_customship from './modify_item/Modify_customship';
+import Modify_satellite from './modify_item/Modify_satellite';
 
 
 function App() {
@@ -19,6 +21,8 @@ function App() {
                     <Route path="/starships/list_custom_satellites" element={<CustomSatellites_list />} />
                     <Route path="/starships/add_satellite" element={<AddSatellitePage />} />
                     <Route path="/starships/main_list" element={<Starshiplist />} />
+                    <Route path="/starships/modify_customship" element={<Modify_customship />} />
+                    <Route path="/starships/modify_satellite" element={<Modify_satellite />} />
                 </Routes>
             </Router>
         </div>

@@ -1,27 +1,19 @@
-import { useState } from "react";
-import useCustomship from "./useCustomship";
+import { useEffect} from "react";
+import useModify_customship from "./useModify_customship";
 
-export default function ModifyCustomship ({data, setModifying, fetchData})
+export default function Modify_customship ()
 {
-    const {fields} = useCustomship();
+    const {fetchData, queryValue, handleChange, handleSubmit, fields, data} = useModify_customship();
 
-    const [values, setValues] = useState(data)
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setValues({ ...values, [name]: value });
-    }
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setModifying(false);
-        try {
-            await axios.post('/modify/customship', values);
-        } catch (error) {
-            console.error('There was an error!', error);
-        }
+    useEffect(() => {
         fetchData();
-    }
+    }, []);
+
+    if (!queryValue)
+        return <h1 className="sm:text-5xl text-slate-400 font-bold">No ID Provided</h1>
+
+    if (!data)
+        return <h1 className="sm:text-5xl text-slate-400 font-bold">Wrong ID</h1>
 
     return (
         <div className="inline-block">
@@ -31,17 +23,18 @@ export default function ModifyCustomship ({data, setModifying, fetchData})
                     <tbody>
                         {fields.map((item, index) => (
                             <tr key={index}>
-                                <th className="text-white bg-[#97979736] rounded px-3">
+                                <th className="text-white bg-[#97979736] rounded">
                                     <label htmlFor={item}>{item}</label>
                                 </th>
                                 <td className="py-2 bg-[#9e9e9e21] rounded">
-                                    <input id={item} type='text' placeholder={item} onChange = {handleChange} name={item} required value={values[item]} className="bg-transparent text-white"/>
+                                    <input id={item} type='text' placeholder={item} onChange = {handleChange} name={item} defaultValue={data[item]}required className="bg-transparent text-white"/>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
                 <div className="py-5">
+                    <a href="/starships/list_custom_ship" className="text-white bg-gradient-to-bl from-black to-gray-800 hover:bg-gradient-to-b focus:ring-4 focus:outline-none focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Cancel</a>
                     <button type='submit' className="text-white bg-gradient-to-bl from-black to-gray-800 hover:bg-gradient-to-b focus:ring-4 focus:outline-none focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Submit</button>
                 </div>
             </form>
