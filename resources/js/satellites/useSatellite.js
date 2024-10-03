@@ -1,14 +1,20 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function useSatellite () {
-    const [data, setData] = useState([]);
+
+    const [data, setData] = useState({
+        name: '',
+        model: '',
+        cost: '',
+        capacity: '',
+        class: '',
+    });
     
-    async function fetchData() {
-      const result = await fetch(`/api/satellites`);
-      const body = await result.json();
-      setData(body);
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setData({ ...data, [name]: value });
     }
-    
+
     const fields = [
         'name',
         'model',
@@ -17,35 +23,6 @@ export default function useSatellite () {
         'class',
     ];
 
-    const [values, setValues] = useState({
-        name: '',
-        model: '',
-        cost: '',
-        capacity: '',
-        class: '',
-    })
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setValues({ ...values, [name]: value });
-    }
+    return {fields, data, setData, handleChange}
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            await axios.post('/store/satellites', values);
-            fetchData();
-        } catch (error) {
-            console.error('There was an error!', error);
-        }
-    }
-
-    const handleDelete = async (id) => {
-        try {
-            await axios.post(`/delete/satellite`, {id: id});
-        } catch (error) {
-            console.error('There was an error!', error);
-        }
-        fetchData();
-    }
-    return {fields, data, fetchData, handleChange, handleSubmit, handleDelete}
 }
