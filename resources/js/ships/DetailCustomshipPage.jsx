@@ -1,7 +1,7 @@
 import useDetailCustomship from "./useDetailCustomship";
 
 export default function DetailCustomshipPage () {
-    const {ship, handleChange, Title, fields, handleSubmit, FetchError, handleDelete, isCreating} = useDetailCustomship();
+    const {ship, handleChange, Title, fields, handleSubmit, FetchError, handleDelete, isCreating, satellites} = useDetailCustomship();
 
     if (FetchError)
         return <h1 className="sm:text-5xl text-slate-400 font-bold">An error has occured</h1>
@@ -15,13 +15,29 @@ export default function DetailCustomshipPage () {
                         {fields.map((item, index) => (
                             <tr key={index}>
                                 <th className="text-white bg-[#97979736] rounded">
-                                    <label htmlFor={item}>{item}</label>
+                                    <label htmlFor={item[0]}>{item[0]}</label>
                                 </th>
                                 <td className="py-2 bg-[#9e9e9e21] rounded">
-                                    <input id={item} type='text' placeholder={item} onChange = {handleChange} name={item} defaultValue={ship[item]} required className="bg-transparent text-white"/>
+                                    <input id={item[0]} type={item[1]} placeholder={item[0]} onChange = {handleChange} name={item[0]} value={ship[item[0]]}required className="bg-transparent text-white"/>
                                 </td>
                             </tr>
                         ))}
+                        <tr key='satellites'>
+                            <th className="text-white bg-[#97979736] rounded py-3">
+                                <label htmlFor="select_satellite">Linked Satellite</label>
+                            </th>
+                            <td className="py-2 bg-[#9e9e9e21] rounded ">
+                                <details className="px-5">
+                                    <summary className="text-white font-bold">Chose Satellite</summary>
+                                    {satellites.map((item) => (
+                                        <div key={item.name} className="text-white py-2">
+                                            <input type="radio" id={item.name} value={item.id} name='linked_satellite_id' onChange={handleChange} required/>
+                                            <label htmlFor={item.name} className="px-5">{item.name}</label>
+                                        </div>
+                                    ))}
+                                </details>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
                 <div className="py-5">

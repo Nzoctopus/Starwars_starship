@@ -3,9 +3,7 @@ import useCustomshipViewModel from "../model/useCustomshipViewModel";
 
 export default function useCustomshipList () {
     const {fetchAllCustomship} = useCustomshipViewModel();
-
     const [FetchedData, setFetchedData] = useState([]);
-
     useEffect(() => {
       fetchAllCustomship().then(result => {
         setFetchedData(result);

@@ -37,6 +37,14 @@ Route::get('/api/satellites', function () {
     return response()->json($satellite);
 });
 
+// Route::get('/delete/all/customship', function () {
+//     ship::truncate();
+// });
+
+// Route::get('/delete/all/satellite', function () {
+//     Satellite::truncate();
+// });
+
 Route::get('/api/satellites/{id}', function($id) {
     $satellite = Satellite::find($id);
     if (!$satellite) {

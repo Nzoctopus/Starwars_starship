@@ -29,5 +29,6 @@ class ship extends Model
         'hyperdrive_rating',
         'mglt',
         'starship_class',
+        'linked_satellite_id',
     ];
 }

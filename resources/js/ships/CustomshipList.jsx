@@ -1,11 +1,15 @@
 import '../../css/app.css'; // Import Tailwind CSS
 import React from "react";
 import useCustomshipList from './useCustomshipList';
+import LinkedSatelliteInfo from './LinkedSatelliteInfo';
+import useNavigationButtons from '../useNavigationButtons';
 
 const Customship_list = () => {
   
   const {FetchedData} = useCustomshipList();
-  
+  const {handleClick} = useNavigationButtons();
+
+  console.log(FetchedData);
   return (
     <div>
         <p className="mt-6 text-[2.5rem] leading-none sm:text-4xl tracking-tight font-bold text-yellow-500 py-5">Customship</p>
@@ -26,8 +30,9 @@ const Customship_list = () => {
                       <p>hyperdrive_rating : {item.hyperdrive_rating}</p>
                       <p>mglt : {item.mglt}</p>
                       <p>starship_class : {item.starship_class}</p>
+                      <LinkedSatelliteInfo id={item.linked_satellite_id} />
                   </div>
-                  <a href={`/starships/detail_custom_ship/${item.id}`} className="text-white bg-gradient-to-bl from-black to-gray-800 hover:bg-gradient-to-b focus:ring-4 focus:outline-none focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 self-center">Modify Customship</a>
+                  <button onClick={(e) => handleClick(e, `/starships/detail_custom_ship/${item.id}`)} className="text-white bg-gradient-to-bl from-black to-gray-800 hover:bg-gradient-to-b focus:ring-4 focus:outline-none focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 self-center">Modify Customship</button>
                 </div>
             </details>
           ))}
