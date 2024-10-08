@@ -6,7 +6,11 @@ use App\Http\Controllers\StarshipController;
 use App\Models\Satellite;
 
 Route::get("/", function () {
-    return redirect('/starships/main_list');
+    return redirect('/starships/main_list/1');
+});
+
+Route::get("/starships/main_list", function () {
+    return redirect('/starships/main_list/1');
 });
 
 Route::get('/starships/{any}', function () {

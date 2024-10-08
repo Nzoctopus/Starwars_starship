@@ -1,35 +1,46 @@
-import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 export default function useStarship () {
 
-    
+    const navigate = useNavigate();
+
+    const params = useParams();
+    const [page, setPage] = useState(params.page);
     const [data, setData] = useState([]);
-    
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    
-    const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);    
-    const queryValue = queryParams.get('page') || 1;  // Default to 1 if not found
-    const [page, setPage] = useState(Number(queryValue));    
-    
+    const [error, setError] = useState(false);
+
     const fetchData = async () => {
-        const apiUrl = `https://swapi.dev/api/starships/?page=${page}`;
-        try {
-            const response = await fetch(apiUrl); // Fetch the data
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const jsonData = await response.json(); // Parse JSON data
-            setData(jsonData); // Set data to state
-        } catch (err) {
-            setError(err.message); // Set error message
-        } finally {
-            setLoading(false); // Set loading to false
-        }
+        setLoading(true);
+        if (!isNaN(params.page)) {
+            setPage(Number(params.page));
+            const apiUrl = `https://swapi.dev/api/starships/?page=${page}`;
+            await axios.get(apiUrl).then(result => {
+                console.log("okokokokok", result.data);
+                setData(result.data);
+            }).catch(error => {
+                console.error('error la', error);
+                setError(true);
+            })
+        } else
+            setError(true);
+        setLoading(false);
+        console.log("params page", params.page)
     };
+
     const last_page = Math.ceil(data.count / 10);
-    
-    return {data, fetchData, loading, error, page, setPage, setLoading, last_page}
+
+    const handleClick = (e, link) => {
+        e.preventDefault();
+        console.log("cliked to link", link);
+        navigate(link);
+        fetchData()
+    }
+
+    useEffect(() => {
+        fetchData();
+       }, []);
+ 
+    return {data, fetchData, loading, error, page, setPage, setLoading, last_page, handleClick}
 }

@@ -3,11 +3,7 @@ import useStarship from "./useStarship"
 
 export default function Starshiplist () {
 
-    const {data, loading, page, fetchData, error, last_page} = useStarship();
-
-    useEffect(() => {
-       fetchData();
-      }, []);
+    const {data, loading, page, fetchData, error, last_page, handleClick} = useStarship();
 
     if (loading) {
       return <div className="text-white">Loading...</div>;
@@ -44,28 +40,28 @@ export default function Starshiplist () {
             <div className="fixed bottom-0 left-0 right-0 justify-center flex flex-wrap bg-gradient-to-br from-black to-gray-800 pt-5 pb-5">
                 {
                 data.previous ? 
-                <a href={`/starships/main_list/?page=1`} className="text-white bg-gradient-to-bl from-black to-gray-800 hover:bg-gradient-to-b focus:ring-4 focus:outline-none focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">First</a>
+                <button onClick={(e) => handleClick(e, `/starships/main_list/1`)} className="text-white bg-gradient-to-bl from-black to-gray-800 hover:bg-gradient-to-b focus:ring-4 focus:outline-none focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">First</button>
                 :
-                <a disabled className="text-white bg-gradient-to-bl from-black to-gray-800 focus:ring-4 focus:outline-none focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 opacity-45">First</a>
+                <button disabled className="text-white bg-gradient-to-bl from-black to-gray-800 focus:ring-4 focus:outline-none focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 opacity-45">First</button>
                 }
                 {
                 data.previous ? 
-                <a href={`/starships/main_list/?page=${page - 1}`} className="text-white bg-gradient-to-bl from-black to-gray-800 hover:bg-gradient-to-b focus:ring-4 focus:outline-none focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Previous</a>
+                <button onClick={(e) => handleClick(e, `/starships/main_list/${page - 1}`)} className="text-white bg-gradient-to-bl from-black to-gray-800 hover:bg-gradient-to-b focus:ring-4 focus:outline-none focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Previous</button>
                 :
-                <a disabled className="text-white bg-gradient-to-bl from-black to-gray-800 focus:ring-4 focus:outline-none focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 opacity-45">Previous</a>
+                <button disabled className="text-white bg-gradient-to-bl from-black to-gray-800 focus:ring-4 focus:outline-none focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 opacity-45">Previous</button>
                 }
-                <a  className="font-bold text-white bg-black focus:ring-4 focus:outline-none focus:ring-yellow-500 rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"> Page {page}</a>
+                <button  className="font-bold text-white bg-black focus:ring-4 focus:outline-none focus:ring-yellow-500 rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"> Page {page}</button>
                 {
                 data.next ? 
-                <a href={`/starships/main_list/?page=${page + 1}`} className="text-white bg-gradient-to-bl from-black to-gray-800 hover:bg-gradient-to-b focus:ring-4 focus:outline-none focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Next</a>
+                <button onClick={(e) => handleClick(e, `/starships/main_list/${page + 1}`)} className="text-white bg-gradient-to-bl from-black to-gray-800 hover:bg-gradient-to-b focus:ring-4 focus:outline-none focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Next</button>
                 :
-                <a disabled className="text-white bg-gradient-to-bl from-black to-gray-800 focus:ring-4 focus:outline-none focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 opacity-45">Next</a>
+                <button disabled className="text-white bg-gradient-to-bl from-black to-gray-800 focus:ring-4 focus:outline-none focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 opacity-45">Next</button>
                 }
                 {
                 data.next ? 
-                <a href={`/starships/main_list/?page=${last_page}`} className="text-white bg-gradient-to-bl from-black to-gray-800 hover:bg-gradient-to-b focus:ring-4 focus:outline-none focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Last</a>
+                <button onClick={(e) => handleClick(e, `/starships/main_list/${last_page}`)} className="text-white bg-gradient-to-bl from-black to-gray-800 hover:bg-gradient-to-b focus:ring-4 focus:outline-none focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Last</button>
                 :
-                <a disabled className="text-white bg-gradient-to-bl from-black to-gray-800 focus:ring-4 focus:outline-none focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 opacity-45">Last</a>
+                <button disabled className="text-white bg-gradient-to-bl from-black to-gray-800 focus:ring-4 focus:outline-none focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 opacity-45">Last</button>
                 }
             </div>
         </div>
