@@ -1,8 +1,19 @@
 import useSatelliteModel from "./useSatelliteModel";
 
-export default function useSatelliteViewModel () {
+export default function useSatelliteViewModel() {
+    const {
+        fetchAllSatellite,
+        fetchSingleSatellite,
+        deleteSatellite,
+        updateSatellite,
+        createSatellite,
+    } = useSatelliteModel();
 
-    const {fetchAllSatellite, fetchSingleSatellite, deleteSatellite, updateSatellite, createSatellite} = useSatelliteModel();
-    
-    return {fetchAllSatellite, fetchSingleSatellite, deleteSatellite, updateSatellite, createSatellite};
+    return {
+        fetchAllSatellite,
+        fetchSingleSatellite,
+        deleteSatellite,
+        updateSatellite,
+        createSatellite,
+    };
 }

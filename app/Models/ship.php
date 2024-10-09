@@ -31,4 +31,10 @@ class ship extends Model
         'starship_class',
         'linked_satellite_id',
     ];
+
+    public function satellite()
+    {
+        return $this->belongsTo(Satellite::class, 'linked_satellite_id');
+    }
+
 }

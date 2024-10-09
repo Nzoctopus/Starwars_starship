@@ -18,7 +18,7 @@ Route::get('/starships/{any}', function () {
 })->where('any', '.*');
 
 Route::get('/api/custom', function () {
-    $customship = ship::all();
+    $customship = ship::with('satellite')->get();
     if (!$customship) {
         return response()->json(['error' => 'Satellite not found'], 404);
     }
