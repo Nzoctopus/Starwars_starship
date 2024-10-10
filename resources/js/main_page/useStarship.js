@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
-export default function useStarship () {
-
+export default function useStarship() {
     const navigate = useNavigate();
 
     const params = useParams();
@@ -16,31 +15,39 @@ export default function useStarship () {
         if (!isNaN(params.page)) {
             setPage(Number(params.page));
             const apiUrl = `https://swapi.dev/api/starships/?page=${page}`;
-            await axios.get(apiUrl).then(result => {
-                console.log("okokokokok", result.data);
-                setData(result.data);
-            }).catch(error => {
-                console.error('error la', error);
-                setError(true);
-            })
-        } else
-            setError(true);
+            await axios
+                .get(apiUrl)
+                .then((result) => {
+                    setData(result.data);
+                })
+                .catch((error) => {
+                    setError(true);
+                });
+        } else setError(true);
         setLoading(false);
-        console.log("params page", params.page)
     };
 
     const last_page = Math.ceil(data.count / 10);
 
     const handleClick = (e, link) => {
         e.preventDefault();
-        console.log("cliked to link", link);
         navigate(link);
-        fetchData()
-    }
+        window.location.reload();
+    };
 
     useEffect(() => {
         fetchData();
-       }, []);
- 
-    return {data, fetchData, loading, error, page, setPage, setLoading, last_page, handleClick}
+    }, []);
+
+    return {
+        data,
+        fetchData,
+        loading,
+        error,
+        page,
+        setPage,
+        setLoading,
+        last_page,
+        handleClick,
+    };
 }

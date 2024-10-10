@@ -59,9 +59,10 @@ export default function DetailCustomshipPage() {
                                     name="linked_satellite_id"
                                     onChange={handleChange}
                                     required
+                                    defaultValue=""
                                     className="bg-transparent text-yellow-500 font-bold"
                                 >
-                                    <option value="" disabled selected>
+                                    <option disabled value="">
                                         Select an option
                                     </option>
                                     {satellites.map((item) => (
