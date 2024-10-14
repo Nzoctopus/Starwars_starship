@@ -1,9 +1,13 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Models\ship;
 use App\Http\Controllers\StarshipController;
 use App\Models\Satellite;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 Route::get("/", function () {
     return redirect('/starships/main_list/1');
@@ -41,6 +45,7 @@ Route::get('/api/satellites', function () {
     return response()->json($satellite);
 });
 
+
 // Route::get('/delete/all/customship', function () {
 //     ship::truncate();
 // });
@@ -65,3 +70,17 @@ Route::post('/delete/satellite', [StarshipController::class, 'delete_satellite']
 Route::post('/store/ship', [StarshipController::class, 'store_ship']);
 Route::post('/modify/customship', [StarshipController::class, 'modify_customship']);
 Route::post('/delete/customship', [StarshipController::class, 'delete_customship']);
+
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+Route::get('/user', [AuthController::class, 'user'])->middleware('auth');  // Use 'auth' middleware to protect the route
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth');
+
+Route::get('/api/users', function () {
+    $users = User::all();
+    if (!$users) {
+        return response()->json(['error' => 'User not found'], 404);
+    }
+    return response()->json($users);
+});
+
