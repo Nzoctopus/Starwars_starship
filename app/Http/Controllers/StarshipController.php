@@ -26,6 +26,7 @@ class StarshipController extends Controller
             'hyperdrive_rating' => 'required|string|max:255',
             'mglt' => 'required|integer',
             'starship_class' => 'required|string|max:255',
+            'linked_satellite_id' => 'required',
         ]);
         ship::create($validatedData);
     }
@@ -82,6 +83,7 @@ class StarshipController extends Controller
             'hyperdrive_rating' => 'required',
             'mglt' => 'required|integer',
             'starship_class' => 'required|string|max:255',
+            'linked_satellite_id'=> 'required',
         ]);
         $customship = ship::find($request->id);
         $customship->update($validatedData);
