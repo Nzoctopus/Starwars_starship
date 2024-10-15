@@ -1,7 +1,7 @@
 import useRegisterPage from "./useRegisterPage";
 
 export default function RegisterPage() {
-    const { handleChange, handleClick, handleSubmit, data} = useRegisterPage();
+    const { handleChange, handleClick, handleSubmit, data } = useRegisterPage();
 
     return (
         <div>

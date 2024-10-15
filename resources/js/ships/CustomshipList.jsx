@@ -32,6 +32,15 @@ const Customship_list = () => {
                             <p>hyperdrive_rating : {item.hyperdrive_rating}</p>
                             <p>mglt : {item.mglt}</p>
                             <p>starship_class : {item.starship_class}</p>
+                            {item.user ? (
+                                <h1 className="text-white font-bold">
+                                    Created by {item.user.name}
+                                </h1>
+                            ) : (
+                                <h2 className="text-white font-bold">
+                                    User Deleted
+                                </h2>
+                            )}
                             {item.satellite ? (
                                 <details>
                                     <summary className="hover:text-yellow-300 hover:text-xl cursor-pointer font-bold text-lg text-yellow-400 p-3">
@@ -43,13 +52,14 @@ const Customship_list = () => {
                                             <p>model : {item.satellite.model}</p>
                                             <p>cost : {item.satellite.cost}</p>
                                             <p>capacity :{item.satellite.capacity}</p>
-                                            <p>class : {item.satellite.class}
-                                            </p>
+                                            <p>class : {item.satellite.class}</p>
                                         </div>
                                     </div>
                                 </details>
                             ) : (
-                                <h2 className="text-white font-bold">Satellite Deleted</h2>
+                                <h2 className="text-white font-bold">
+                                    Satellite Deleted
+                                </h2>
                             )}
                         </div>
                         <button

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useSatelliteViewModel from "../model/useSatelliteViewModel";
+import useAuthViewModel from "../model/useAuthViewModel";
 
 export default function useDetailSatellite() {
     const {
@@ -10,6 +11,7 @@ export default function useDetailSatellite() {
         deleteSatellite,
     } = useSatelliteViewModel();
 
+    const { isLoggedIn, getUser } = useAuthViewModel();
     const params = useParams();
     const [FetchError, setFetchError] = useState(false);
     const isCreating = params.id == "create";
@@ -33,6 +35,19 @@ export default function useDetailSatellite() {
     console.log(params);
 
     useEffect(() => {
+        isLoggedIn().then((result) => {
+            if (!result.isLoggedIn) {
+                navigate("/starships/login");
+            } else {
+                getUser().then((result) => {
+                    console.log("user id is", result);
+                    setSatellite((prev) => ({
+                        ...prev,
+                        linked_user_id: result.id,
+                    }));
+                });
+            }
+        });
         if (!isCreating) {
             console.log("modifying");
             fetchSingleSatellite(params.id)

@@ -23,6 +23,15 @@ const SatelliteList = () => {
                             <p>cost : {item.cost}</p>
                             <p>capacity : {item.capacity}</p>
                             <p>class : {item.class}</p>
+                            {item.user ? (
+                                <h1 className="text-white font-bold">
+                                    Created by {item.user.name}
+                                </h1>
+                            ) : (
+                                <h2 className="text-white font-bold">
+                                    User Deleted
+                                </h2>
+                            )}
                         </div>
                         <button
                             onClick={(e) =>

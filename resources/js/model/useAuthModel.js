@@ -14,9 +14,14 @@ export default function useAuthModel() {
         return await result.json();
     };
 
+    const isLoggedIn = async () => {
+        const result = await fetch("/isLoggedIn");
+        return await result.json();
+    };
+
     const Logout = async () => {
         console.log("link = ", "/logout");
-        return await axios.post('/logout', {}, { withCredentials: true });
+        return await axios.post("/logout", {}, { withCredentials: true });
     };
-    return { Login, Register, getUser , Logout};
+    return { Login, Register, getUser, Logout, isLoggedIn };
 }

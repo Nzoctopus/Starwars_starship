@@ -1,14 +1,12 @@
 import useAuthStatus from "./useAuthStatus";
 
 export default function AuthStatus() {
-    const { handleClick, User, isLogged, handleLogout} = useAuthStatus();
+    const { handleClick, User, isLogged, handleLogout } = useAuthStatus();
     return (
         <div>
             {isLogged ? (
                 <div className="fixed top-3 right-0 px-3">
-                    <h1 className="text-white">
-                        Connected as {User.name}
-                    </h1>
+                    <h1 className="text-white">Connected as {User.name}</h1>
                     <button
                         type="button"
                         onClick={handleLogout}

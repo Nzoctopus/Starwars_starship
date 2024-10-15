@@ -2,6 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import useCustomshipViewModel from "../model/useCustomshipViewModel";
 import { useEffect, useState } from "react";
 import useSatelliteViewModel from "../model/useSatelliteViewModel";
+import useAuthViewModel from "../model/useAuthViewModel";
 
 export default function useDetailCustomship() {
     const {
@@ -11,7 +12,7 @@ export default function useDetailCustomship() {
         deleteCustomship,
     } = useCustomshipViewModel();
     const { fetchAllSatellite } = useSatelliteViewModel();
-
+    const { isLoggedIn, getUser } = useAuthViewModel();
     const params = useParams();
     const [FetchError, setFetchError] = useState(false);
     const isCreating = params.id == "create";
@@ -58,6 +59,7 @@ export default function useDetailCustomship() {
         mglt: "",
         starship_class: "",
         linked_satellite_id: "",
+        linked_user_id: "",
     });
 
     const handleChange = (e) => {
@@ -70,6 +72,19 @@ export default function useDetailCustomship() {
     console.log(params);
 
     useEffect(() => {
+        isLoggedIn().then((result) => {
+            if (!result.isLoggedIn) {
+                navigate("/starships/login");
+            } else {
+                getUser().then((result) => {
+                    console.log("user id is", result);
+                    setShip((prev) => ({
+                        ...prev,
+                        linked_user_id: result.id,
+                    }));
+                });
+            }
+        });
         fetchAllSatellite()
             .then((result) => {
                 console.log("result", result);

@@ -27,6 +27,7 @@ class StarshipController extends Controller
             'mglt' => 'required|integer',
             'starship_class' => 'required|string|max:255',
             'linked_satellite_id' => 'required',
+            'linked_user_id'=> 'required',
         ]);
         ship::create($validatedData);
     }
@@ -39,6 +40,7 @@ class StarshipController extends Controller
             'cost' => 'required|integer',
             'capacity' => 'required|integer',
             'class' => 'required|string|max:255',
+            'linked_user_id'=> 'required',
         ]);
         Satellite::create($validatedData);
     }
@@ -57,6 +59,7 @@ class StarshipController extends Controller
             'cost' => 'required|integer',
             'capacity' => 'required|integer',
             'class' => 'required|string|max:255',
+            'linked_user_id'=> 'required',
         ]);
         $satellite = Satellite::find($request->id);
         $satellite->update($validatedData);
@@ -84,6 +87,7 @@ class StarshipController extends Controller
             'mglt' => 'required|integer',
             'starship_class' => 'required|string|max:255',
             'linked_satellite_id'=> 'required',
+            'linked_user_id'=> 'required',
         ]);
         $customship = ship::find($request->id);
         $customship->update($validatedData);

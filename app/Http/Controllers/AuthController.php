@@ -61,4 +61,5 @@ class AuthController extends Controller
         Auth::logout();
         return response()->json(['message' => 'Logged out successfully'], 200);
     }
+
 }
