@@ -2,10 +2,12 @@ import "../../css/app.css"; // Import Tailwind CSS
 import React from "react";
 import useCustomshipList from "./useCustomshipList";
 import useNavigationButtons from "../useNavigationButtons";
+import useTimeViewModel from "../model/useTimeViewModel";
 
 const Customship_list = () => {
-    const { FetchedData } = useCustomshipList();
+    const { FetchedData} = useCustomshipList();
     const { handleClick } = useNavigationButtons();
+    const {getDate, getTime} = useTimeViewModel()
 
     console.log(FetchedData);
     return (
@@ -32,6 +34,8 @@ const Customship_list = () => {
                             <p>hyperdrive_rating : {item.hyperdrive_rating}</p>
                             <p>mglt : {item.mglt}</p>
                             <p>starship_class : {item.starship_class}</p>
+                            <p>Created at: {getDate(item.created_at)} at {getTime(item.created_at)} (UTC)</p>
+                            <p>Updated at: {getDate(item.updated_at)} at {getTime(item.updated_at)} (UTC)</p>
                             {item.user ? (
                                 <h1 className="text-white font-bold">
                                     Created by {item.user.name}
@@ -53,6 +57,8 @@ const Customship_list = () => {
                                             <p>cost : {item.satellite.cost}</p>
                                             <p>capacity :{item.satellite.capacity}</p>
                                             <p>class : {item.satellite.class}</p>
+                                            <p>Created at: {getDate(item.satellite.created_at)} at {getTime(item.satellite.created_at)} (UTC)</p>
+                                            <p>Updated at: {getDate(item.satellite.updated_at)} at {getTime(item.satellite.updated_at)} (UTC)</p>
                                         </div>
                                     </div>
                                 </details>

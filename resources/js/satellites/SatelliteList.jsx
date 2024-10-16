@@ -2,10 +2,12 @@ import "../../css/app.css"; // Import Tailwind CSS
 import React from "react";
 import useSatelliteList from "./useSatelliteList";
 import useNavigationButtons from "../useNavigationButtons";
+import useTimeViewModel from "../model/useTimeViewModel";
 
 const SatelliteList = () => {
     const { FetchedData } = useSatelliteList();
     const { handleClick } = useNavigationButtons();
+    const {getDate, getTime} = useTimeViewModel()
 
     return (
         <div>
@@ -23,6 +25,8 @@ const SatelliteList = () => {
                             <p>cost : {item.cost}</p>
                             <p>capacity : {item.capacity}</p>
                             <p>class : {item.class}</p>
+                            <p>Created at: {getDate(item.created_at)} at {getTime(item.created_at)} (UTC)</p>
+                            <p>Updated at: {getDate(item.updated_at)} at {getTime(item.updated_at)} (UTC)</p>
                             {item.user ? (
                                 <h1 className="text-white font-bold">
                                     Created by {item.user.name}
