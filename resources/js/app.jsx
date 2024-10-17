@@ -8,6 +8,10 @@ import Starshiplist from "./main_page/Starshiplist";
 import DetailCustomshipPage from "./ships/DetailCustomshipPage";
 import DetailSatellitePage from "./satellites/DetailSatellitePage";
 import NavigationButtons from "./NavigationButtons";
+import AuthStatus from "./auth/AuthStatus";
+import LoginPage from "./auth/LoginPage";
+import RegisterPage from "./auth/RegisterPage";
+import UserPage from "./user/UserPage";
 
 function App() {
     return (
@@ -18,6 +22,7 @@ function App() {
                 </p>
             </div>
             <Router>
+                <AuthStatus />
                 <NavigationButtons />
                 <div className="justify-center flex md:flex-row flex-wrap gap-40 pb-20">
                     <Routes>
@@ -40,6 +45,18 @@ function App() {
                         <Route
                             path="/starships/main_list/:page"
                             element={<Starshiplist />}
+                        />
+                        <Route
+                            path="/starships/login"
+                            element={<LoginPage />}
+                        />
+                        <Route
+                            path="/starships/register"
+                            element={<RegisterPage />}
+                        />
+                        <Route
+                            path="/starships/user"
+                            element={<UserPage />}
                         />
                     </Routes>
                 </div>

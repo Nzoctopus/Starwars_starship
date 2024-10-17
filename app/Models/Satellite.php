@@ -21,5 +21,10 @@ class Satellite extends Model
         'cost',
         'capacity',
         'class',
+        'linked_user_id'
     ];
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'linked_user_id');
+    }
 }

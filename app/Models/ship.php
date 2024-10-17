@@ -30,6 +30,7 @@ class ship extends Model
         'mglt',
         'starship_class',
         'linked_satellite_id',
+        'linked_user_id'
     ];
 
     public function satellite()
@@ -37,4 +38,8 @@ class ship extends Model
         return $this->belongsTo(Satellite::class, 'linked_satellite_id');
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'linked_user_id');
+    }
 }
