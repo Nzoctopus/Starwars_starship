@@ -11,6 +11,7 @@ import NavigationButtons from "./NavigationButtons";
 import AuthStatus from "./auth/AuthStatus";
 import LoginPage from "./auth/LoginPage";
 import RegisterPage from "./auth/RegisterPage";
+import UserPage from "./user/UserPage";
 
 function App() {
     return (
@@ -52,6 +53,10 @@ function App() {
                         <Route
                             path="/starships/register"
                             element={<RegisterPage />}
+                        />
+                        <Route
+                            path="/starships/user"
+                            element={<UserPage />}
                         />
                     </Routes>
                 </div>

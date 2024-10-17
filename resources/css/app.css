@@ -10,3 +10,12 @@ button {
 button:hover {
     transform: scale(1.1);
 }
+
+.UserPfp {
+    transform: scale(1);
+    transition: transform 300ms ease-in-out;
+}
+
+.UserPfp:hover {
+    transform: scale(1.1);
+}

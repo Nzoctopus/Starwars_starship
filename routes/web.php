@@ -24,7 +24,7 @@ Route::get('/starships/{any}', function () {
 Route::get('/api/custom', function () {
     $customship = ship::with(['satellite', 'user'])->get();
     if (!$customship) {
-        return response()->json(['error' => 'Satellite not found'], 404);
+        return response()->json(['error' => 'Starship not found'], 404);
     }
     return response()->json($customship);
 });
@@ -32,7 +32,15 @@ Route::get('/api/custom', function () {
 Route::get('/api/custom/{id}', function($id) {
     $customship = ship::find($id);
     if (!$customship) {
-        return response()->json(['error' => 'Satellite not found'], 404);
+        return response()->json(['error' => 'Starship not found'], 404);
+    }
+    return response()->json($customship);
+});
+
+Route::get('/users/created_ship/{id}', function($id) {
+    $customship = ship::where('linked_user_id', $id)->get();
+    if (!$customship) {
+        return response()->json(['error' => 'Starship not found'], 404);
     }
     return response()->json($customship);
 });
@@ -40,7 +48,7 @@ Route::get('/api/custom/{id}', function($id) {
 Route::get('/api/satellites', function () {
     $satellite = Satellite::with('user')->get();
     if (!$satellite) {
-        return response()->json(['error' => 'Satellite not found'], 404);
+        return response()->json(['error' => 'Starship not found'], 404);
     }
     return response()->json($satellite);
 });
@@ -53,6 +61,15 @@ Route::get('/api/satellites/{id}', function($id) {
     return response()->json($satellite);
 });
 
+Route::get('/users/created_satellite/{id}', function($id) {
+    $satellite = Satellite::where('linked_user_id', $id)->get();
+    if (!$satellite) {
+        return response()->json(['error' => 'Satellite not found'], 404);
+    }
+    return response()->json($satellite);
+});
+
+
 // Route::get('/delete/all/customship', function () {
 //     ship::truncate();
 // });
@@ -60,7 +77,6 @@ Route::get('/api/satellites/{id}', function($id) {
 // Route::get('/delete/all/satellite', function () {
 //     Satellite::truncate();
 // });
-
 
 
 Route::post('/store/satellite', [StarshipController::class, 'store_satellite']);
