@@ -9,7 +9,9 @@ export default function DetailSatellitePage() {
         handleSubmit,
         FetchError,
         handleDelete,
+        handleFileChange,
         isCreating,
+        resetImage,
     } = useDetailSatellite();
 
     if (FetchError)
@@ -18,7 +20,6 @@ export default function DetailSatellitePage() {
                 An error has occured
             </h1>
         );
-
     return (
         <div className="inline-block">
             <h1 className="mt-6 text-[2.5rem] leading-none sm:text-4xl tracking-tight font-bold text-yellow-500 py-5 text-center">
@@ -48,6 +49,38 @@ export default function DetailSatellitePage() {
                         ))}
                     </tbody>
                 </table>
+                <div className="pt-10 pb-5">
+                    <label
+                        htmlFor="FileUpload"
+                        className="bg-gradient-to-bl from-gray-500 to-gray-10 hover:cursor-pointer hover:bg-gradient-to-br py-5 px-10 rounded-xl text-white"
+                    >
+                        Upload File
+                    </label>
+                    <input
+                        id="FileUpload"
+                        type="file"
+                        onChange={handleFileChange}
+                        accept=".png, .jpeg, .jpg"
+                        hidden
+                        name="file"
+                    />
+                    <button type="button" onClick={resetImage} className="px-5 pb-10 text-white font-bold sm:text-xl">
+                        Remove Image
+                    </button>
+                    {satellite.file ? (
+                        <div className="bg-[#97979736] p-5 text-white font-bold w-[400px]">
+                            <center>
+                                <img src={URL.createObjectURL(satellite.file)} />
+                            </center>
+                        </div>
+                    ) : (
+                        <div className="bg-[#97979736] p-5 text-white font-bold w-[400px]">
+                            <center>
+                                <h1>No Images provided</h1>
+                            </center>
+                        </div>
+                    )}
+                </div>
                 <div className="py-5">
                     {isCreating ? (
                         <button

@@ -2,6 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import useCustomshipViewModel from "../model/useCustomshipViewModel";
 import { useEffect, useState } from "react";
 import useSatelliteViewModel from "../model/useSatelliteViewModel";
+import useAuthViewModel from "../model/useAuthViewModel";
 
 export default function useDetailCustomship() {
     const {
@@ -11,7 +12,7 @@ export default function useDetailCustomship() {
         deleteCustomship,
     } = useCustomshipViewModel();
     const { fetchAllSatellite } = useSatelliteViewModel();
-
+    const { isLoggedIn, getUser } = useAuthViewModel();
     const params = useParams();
     const [FetchError, setFetchError] = useState(false);
     const isCreating = params.id == "create";
@@ -58,7 +59,23 @@ export default function useDetailCustomship() {
         mglt: "",
         starship_class: "",
         linked_satellite_id: "",
+        linked_user_id: "",
+        file:null,
     });
+
+    const resetImage = () => {
+        setShip((prev) => ({
+            ...prev,
+            file: null,
+        }));
+    };
+    
+    const handleFileChange = (event) => {
+        setShip((prev) => ({
+            ...prev,
+            file: event.target.files[0],
+        }));
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -70,6 +87,19 @@ export default function useDetailCustomship() {
     console.log(params);
 
     useEffect(() => {
+        isLoggedIn().then((result) => {
+            if (!result.isLoggedIn) {
+                navigate("/starships/login");
+            } else {
+                getUser().then((result) => {
+                    console.log("user id is", result);
+                    setShip((prev) => ({
+                        ...prev,
+                        linked_user_id: result.id,
+                    }));
+                });
+            }
+        });
         fetchAllSatellite()
             .then((result) => {
                 console.log("result", result);
@@ -96,26 +126,27 @@ export default function useDetailCustomship() {
 
     const handleSubmit = async (e, data) => {
         e.preventDefault();
-        if (isCreating) {
-            console.log("sending data ...", data);
-            createCustomship(data)
-                .then(() => {
-                    console.log("Created successfully");
-                    navigate("/starships/list_custom_ship");
-                })
-                .catch((error) => {
-                    console.log("error", error);
-                });
-        } else {
-            updateCustomship(data)
-                .then(() => {
-                    console.log("shipUpdatedSuccessfully");
-                    navigate("/starships/list_custom_ship");
-                })
-                .catch((error) => {
-                    console.error("error", error);
-                });
-        }
+        // if (isCreating) {
+        //     console.log("sending data ...", data);
+        //     createCustomship(data)
+        //         .then(() => {
+        //             console.log("Created successfully");
+        //             navigate("/starships/list_custom_ship");
+        //         })
+        //         .catch((error) => {
+        //             console.log("error", error);
+        //         });
+        // } else {
+        //     updateCustomship(data)
+        //         .then(() => {
+        //             console.log("shipUpdatedSuccessfully");
+        //             navigate("/starships/list_custom_ship");
+        //         })
+        //         .catch((error) => {
+        //             console.error("error", error);
+        //         });
+        // }
+        console.log("tried to submit this data", data);
     };
     const handleDelete = async (e, id) => {
         e.preventDefault();
@@ -140,5 +171,7 @@ export default function useDetailCustomship() {
         FetchError,
         isCreating,
         satellites,
+        resetImage,
+        handleFileChange,
     };
 }

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useSatelliteViewModel from "../model/useSatelliteViewModel";
+import useAuthViewModel from "../model/useAuthViewModel";
 
 export default function useDetailSatellite() {
     const {
@@ -10,13 +11,27 @@ export default function useDetailSatellite() {
         deleteSatellite,
     } = useSatelliteViewModel();
 
+    const { isLoggedIn, getUser } = useAuthViewModel();
     const params = useParams();
     const [FetchError, setFetchError] = useState(false);
     const isCreating = params.id == "create";
     const Title = isCreating ? "ADD SATELLITE" : "MODIFY SATELLITE";
     const navigate = useNavigate();
-
     const fields = ["name", "model", "cost", "capacity", "class"];
+
+    const resetImage = () => {
+        setSatellite((prev) => ({
+            ...prev,
+            file: null,
+        }));
+    };
+    
+    const handleFileChange = (event) => {
+        setSatellite((prev) => ({
+            ...prev,
+            file: event.target.files[0],
+        }));
+    };
 
     const [satellite, setSatellite] = useState({
         name: "",
@@ -24,6 +39,7 @@ export default function useDetailSatellite() {
         cost: "",
         capacity: "",
         class: "",
+        file: null,
     });
 
     const handleChange = (e) => {
@@ -33,6 +49,19 @@ export default function useDetailSatellite() {
     console.log(params);
 
     useEffect(() => {
+        isLoggedIn().then((result) => {
+            if (!result.isLoggedIn) {
+                navigate("/starships/login");
+            } else {
+                getUser().then((result) => {
+                    console.log("user id is", result);
+                    setSatellite((prev) => ({
+                        ...prev,
+                        linked_user_id: result.id,
+                    }));
+                });
+            }
+        });
         if (!isCreating) {
             console.log("modifying");
             fetchSingleSatellite(params.id)
@@ -50,25 +79,26 @@ export default function useDetailSatellite() {
 
     const handleSubmit = async (e, data) => {
         e.preventDefault();
-        if (isCreating) {
-            createSatellite(data)
-                .then(() => {
-                    console.log("Created successfully");
-                    navigate("/starships/list_custom_satellites");
-                })
-                .catch((error) => {
-                    console.log("error", error);
-                });
-        } else {
-            updateSatellite(data)
-                .then(() => {
-                    console.log("satellite Updated Successfully");
-                    navigate("/starships/list_custom_satellites");
-                })
-                .catch((error) => {
-                    console.error("error", error);
-                });
-        }
+        // if (isCreating) {
+        //     createSatellite(data)
+        //         .then(() => {
+        //             console.log("Created successfully");
+        //             navigate("/starships/list_custom_satellites");
+        //         })
+        //         .catch((error) => {
+        //             console.log("error", error);
+        //         });
+        // } else {
+        //     updateSatellite(data)
+        //         .then(() => {
+        //             console.log("satellite Updated Successfully");
+        //             navigate("/starships/list_custom_satellites");
+        //         })
+        //         .catch((error) => {
+        //             console.error("error", error);
+        //         });
+        // }
+        console.log("tried to submit this data", data);
     };
     const handleDelete = async (e, id) => {
         e.preventDefault();
@@ -92,5 +122,7 @@ export default function useDetailSatellite() {
         handleDelete,
         FetchError,
         isCreating,
+        resetImage,
+        handleFileChange,
     };
 }

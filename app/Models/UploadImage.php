@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Satellite extends Model
+class UploadImage extends Model
 {
     use HasFactory;
 
@@ -14,17 +14,12 @@ class Satellite extends Model
      *
      * @var array<int, string>
      */
-    protected $table = 'satellites';
+    protected $table = 'uploadimage';
     protected $fillable = [
-        'name',
-        'model',
-        'cost',
-        'capacity',
-        'class',
-        'linked_user_id'
+        'file_name',
+        'mime_type',
+        'path',
+        'size'
     ];
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'linked_user_id');
-    }
+
 }
