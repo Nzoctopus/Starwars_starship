@@ -13,43 +13,39 @@ export default function useUserPage() {
 
     const navigate = useNavigate();
 
+    const fetchData = async () => {
+        try {
+            const loginStatus = await isLoggedIn();
+            console.log("Login status:", loginStatus);
+
+            if (loginStatus.isLoggedIn) {
+                console.log("User is connected");
+
+                const user = await getUser();
+                setUser(user);
+
+                // Fetch created satellites and starships simultaneously
+                const [satellites, starships] = await Promise.all([
+                    fetchCreatedSatellitesFromUser(user.id),
+                    fetchCreatedStarshipsFromUser(user.id),
+                ]);
+
+                console.log("Fetched created satellites:", satellites);
+                console.log("Fetched created starships:", starships);
+
+                setCreatedSatellites(satellites);
+                setCreatedStarships(starships);
+            } else {
+                console.log("User is not connected");
+                navigate("/starships/register");
+            }
+        } catch (error) {
+            console.error("Error during fetching process:", error);
+        }
+    };
+
     useEffect(() => {
-        isLoggedIn()
-            .then((result) => {
-                console.log("result", result);
-                if (result.isLoggedIn) {
-                    console.log("connected");
-                    getUser()
-                        .then((result) => {
-                            setUser(result);
-                            fetchCreatedSatellitesFromUser(result.id)
-                                .then((result) => {
-                                    console.log("fetched created sat", result);
-                                    setCreatedSatellites(result);
-                                })
-                                .catch((error) => {
-                                    console.error("fetch error", error);
-                                });
-                            fetchCreatedStarshipsFromUser(result.id)
-                                .then((result) => {
-                                    console.log("fetched created sat", result);
-                                    setCreatedStarships(result);
-                                })
-                                .catch((error) => {
-                                    console.error("fetch error", error);
-                                });
-                        })
-                        .catch((error) => {
-                            console.error("user fetch error", error);
-                        });
-                } else {
-                    console.log("not connected");
-                    navigate("/starships/register");
-                }
-            })
-            .catch((error) => {
-                console.error("error", error);
-            });
-    }, []);
+        fetchData();
+    }, [navigate]);
     return { User, CreatedSatellites, CreatedStarships };
 }

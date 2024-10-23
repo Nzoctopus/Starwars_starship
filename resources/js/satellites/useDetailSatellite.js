@@ -17,8 +17,21 @@ export default function useDetailSatellite() {
     const isCreating = params.id == "create";
     const Title = isCreating ? "ADD SATELLITE" : "MODIFY SATELLITE";
     const navigate = useNavigate();
-
     const fields = ["name", "model", "cost", "capacity", "class"];
+
+    const resetImage = () => {
+        setSatellite((prev) => ({
+            ...prev,
+            file: null,
+        }));
+    };
+    
+    const handleFileChange = (event) => {
+        setSatellite((prev) => ({
+            ...prev,
+            file: event.target.files[0],
+        }));
+    };
 
     const [satellite, setSatellite] = useState({
         name: "",
@@ -26,6 +39,7 @@ export default function useDetailSatellite() {
         cost: "",
         capacity: "",
         class: "",
+        file: null,
     });
 
     const handleChange = (e) => {
@@ -65,25 +79,26 @@ export default function useDetailSatellite() {
 
     const handleSubmit = async (e, data) => {
         e.preventDefault();
-        if (isCreating) {
-            createSatellite(data)
-                .then(() => {
-                    console.log("Created successfully");
-                    navigate("/starships/list_custom_satellites");
-                })
-                .catch((error) => {
-                    console.log("error", error);
-                });
-        } else {
-            updateSatellite(data)
-                .then(() => {
-                    console.log("satellite Updated Successfully");
-                    navigate("/starships/list_custom_satellites");
-                })
-                .catch((error) => {
-                    console.error("error", error);
-                });
-        }
+        // if (isCreating) {
+        //     createSatellite(data)
+        //         .then(() => {
+        //             console.log("Created successfully");
+        //             navigate("/starships/list_custom_satellites");
+        //         })
+        //         .catch((error) => {
+        //             console.log("error", error);
+        //         });
+        // } else {
+        //     updateSatellite(data)
+        //         .then(() => {
+        //             console.log("satellite Updated Successfully");
+        //             navigate("/starships/list_custom_satellites");
+        //         })
+        //         .catch((error) => {
+        //             console.error("error", error);
+        //         });
+        // }
+        console.log("tried to submit this data", data);
     };
     const handleDelete = async (e, id) => {
         e.preventDefault();
@@ -107,5 +122,7 @@ export default function useDetailSatellite() {
         handleDelete,
         FetchError,
         isCreating,
+        resetImage,
+        handleFileChange,
     };
 }

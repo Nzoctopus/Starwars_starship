@@ -1,14 +1,12 @@
-import useTimeViewModel from "../model/useTimeViewModel";
 import useUserPage from "./useUserPage";
 
 export default function UserPage() {
     const { User, CreatedSatellites, CreatedStarships } = useUserPage();
-    const { getDate, getTime } = useTimeViewModel();
     return (
         <div>
             <h1 className="text-white sm:text-4xl font-bold">Your Page</h1>
             <div className="py-5">
-                <h1 className="text-white sm:text-2xl font-bold">Info</h1>
+                <h2 className="text-white sm:text-2xl font-bold">Info</h2>
                 <div className="py-3">
                     <p className="text-white sm:text-lg font-bold">E-Mail</p>
                     <p className="text-white sm:text-lg">{User.email}</p>
@@ -20,10 +18,10 @@ export default function UserPage() {
                 <table className="table-auto border-separate border-spacing-2 bg-[#53535331]">
                     <thead>
                         <tr>
-                            <th className="py-2 bg-[#9e9e9e21] rounded text-yellow-500">
+                            <th className="py-2 px-5 bg-[#9e9e9e21] rounded text-yellow-500">
                                 Created Starships
                             </th>
-                            <th className="py-2 bg-[#9e9e9e21] rounded text-yellow-500">
+                            <th className="py-2 px-5 bg-[#9e9e9e21] rounded text-yellow-500">
                                 Created Satellites
                             </th>
                         </tr>
