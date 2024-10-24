@@ -79,26 +79,26 @@ export default function useDetailSatellite() {
 
     const handleSubmit = async (e, data) => {
         e.preventDefault();
-        // if (isCreating) {
-        //     createSatellite(data)
-        //         .then(() => {
-        //             console.log("Created successfully");
-        //             navigate("/starships/list_custom_satellites");
-        //         })
-        //         .catch((error) => {
-        //             console.log("error", error);
-        //         });
-        // } else {
-        //     updateSatellite(data)
-        //         .then(() => {
-        //             console.log("satellite Updated Successfully");
-        //             navigate("/starships/list_custom_satellites");
-        //         })
-        //         .catch((error) => {
-        //             console.error("error", error);
-        //         });
-        // }
         console.log("tried to submit this data", data);
+        if (isCreating) {
+            createSatellite(data)
+                .then(() => {
+                    console.log("Created successfully");
+                    navigate("/starships/list_custom_satellites");
+                })
+                .catch((error) => {
+                    console.log("error", error);
+                });
+        } else {
+            updateSatellite(data)
+                .then(() => {
+                    console.log("satellite Updated Successfully");
+                    navigate("/starships/list_custom_satellites");
+                })
+                .catch((error) => {
+                    console.error("error", error);
+                });
+        }
     };
     const handleDelete = async (e, id) => {
         e.preventDefault();

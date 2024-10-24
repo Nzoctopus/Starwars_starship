@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Models\ship;
 use App\Http\Controllers\StarshipController;
 use App\Models\Satellite;
+use App\Models\UploadImage;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -46,7 +47,7 @@ Route::get('/users/created_ship/{id}', function($id) {
 });
 
 Route::get('/api/satellites', function () {
-    $satellite = Satellite::with('user')->get();
+    $satellite = Satellite::with(['user', 'file'])->get();
     if (!$satellite) {
         return response()->json(['error' => 'Starship not found'], 404);
     }
@@ -76,6 +77,10 @@ Route::get('/users/created_satellite/{id}', function($id) {
 
 // Route::get('/delete/all/satellite', function () {
 //     Satellite::truncate();
+// });
+
+// Route::get('/delete/all/image', function () {
+//     UploadImage::truncate();
 // });
 
 

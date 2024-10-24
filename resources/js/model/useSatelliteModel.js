@@ -18,13 +18,21 @@ export default function useSatelliteModel() {
     const updateSatellite = async (data) => {
         console.log("link = ", "/modify/satellite");
         console.log("final data = ", data);
-        return await axios.post("/modify/satellite", data);
+        return await axios.post('/modify/satellite', data, {
+            headers: {
+                'Content-Type': 'multipart/form-data', // Important for file uploads
+            },
+        });
     };
 
     const createSatellite = async (data) => {
         console.log("link = ", "/store/satellite");
         console.log("final data = ", data);
-        return await axios.post("/store/satellite", data);
+        return await axios.post('/store/satellite', data, {
+            headers: {
+                'Content-Type': 'multipart/form-data', // Important for file uploads
+            },
+        });
     };
 
     return {
