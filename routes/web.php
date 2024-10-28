@@ -9,6 +9,7 @@ use App\Models\UploadImage;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 Route::get("/", function () {
     return redirect('/starships/main_list/1');
@@ -23,7 +24,7 @@ Route::get('/starships/{any}', function () {
 })->where('any', '.*');
 
 Route::get('/api/custom', function () {
-    $customship = ship::with(['satellite', 'user'])->get();
+    $customship = ship::with(['satellite', 'user', 'file'])->get();
     if (!$customship) {
         return response()->json(['error' => 'Starship not found'], 404);
     }
@@ -71,17 +72,17 @@ Route::get('/users/created_satellite/{id}', function($id) {
 });
 
 
-// Route::get('/delete/all/customship', function () {
-//     ship::truncate();
-// });
+Route::get('/delete/all/customship', function () {
+    ship::truncate();
+});
 
-// Route::get('/delete/all/satellite', function () {
-//     Satellite::truncate();
-// });
+Route::get('/delete/all/satellite', function () {
+    Satellite::truncate();
+});
 
-// Route::get('/delete/all/image', function () {
-//     UploadImage::truncate();
-// });
+Route::get('/delete/all/image', function () {
+    UploadImage::truncate();
+});
 
 
 Route::post('/store/satellite', [StarshipController::class, 'store_satellite']);
@@ -104,9 +105,27 @@ Route::get('/isLoggedIn', function() {
 });
 
 Route::get('/api/users', function () {
-    $users = User::all();
+    $users = User::with(['pfp_file', 'banner_file'])->get();
     if (!$users) {
         return response()->json(['error' => 'User not found'], 404);
     }
     return response()->json($users);
+});
+
+Route::get('/api/images', function () {
+    $images = UploadImage::all();
+    if (!$images) {
+        return response()->json(['error' => 'User not found'], 404);
+    }
+    return response()->json($images);
+});
+
+
+
+Route::get('/api/uploads', function () {
+    $files = Storage::allFiles('/public/uploads');
+    if (!$files) {
+        return response()->json(['error' => 'File not found'], 404);
+    }
+    return response()->json($files);
 });

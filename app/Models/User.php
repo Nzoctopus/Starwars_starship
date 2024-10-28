@@ -20,6 +20,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'linked_pfp_image_id',
+        'linked_banner_image_id'
     ];
 
     /**
@@ -43,5 +45,14 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    public function pfp_file()
+    {
+        return $this->belongsTo(UploadImage::class, 'linked_pfp_image_id');
+    }
+
+    public function banner_file()
+    {
+        return $this->belongsTo(UploadImage::class, 'linked_banner_image_id');
     }
 }

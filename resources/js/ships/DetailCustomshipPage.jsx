@@ -27,7 +27,7 @@ export default function DetailCustomshipPage() {
             <h1 className="mt-6 text-[2.5rem] leading-none sm:text-4xl tracking-tight font-bold text-yellow-500 py-5 text-center">
                 {Title}
             </h1>
-            <form onSubmit={(e) => handleSubmit(e, ship)}>
+            <form onSubmit={(e) => handleSubmit(e, ship)} encType="multipart/form-data">
                 <table className="table-auto border-separate border-spacing-2 bg-[#53535331]">
                     <tbody>
                         {fields.map((item, index) => (

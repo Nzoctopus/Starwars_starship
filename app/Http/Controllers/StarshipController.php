@@ -28,7 +28,27 @@ class StarshipController extends Controller
             'starship_class' => 'required|string|max:255',
             'linked_satellite_id' => 'required',
             'linked_user_id'=> 'required',
+            'file' => 'nullable|file|mimes:jpg,png,jpeg,pdf|max:4096'
         ]);
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            
+            $filePath = $file->store('uploads', 'public'); // Stores in 'storage/app/public/uploads'
+        
+            $fileName = $file->getClientOriginalName();
+            $mimeType = $file->getClientMimeType(); // or $file->getMimeType();
+            $fileSize = $file->getSize();
+        
+            $uploadImage = UploadImage::create([
+                'file_name' => $fileName,
+                'mime_type' => $mimeType,
+                'path' => $filePath,
+                'size' => $fileSize,
+            ]);
+        
+            $validatedData['linked_image_id'] = $uploadImage->id;
+        }
         ship::create($validatedData);
     }
 
@@ -69,6 +89,11 @@ class StarshipController extends Controller
     public function delete_satellite(Request $request)
     {
         $satellite = Satellite::find($request->id);
+        $deletedImage = UploadImage::find($satellite->linked_image_id);
+        if (Storage::exists("/public/$deletedImage->path")) {
+            Storage::delete("/public/$deletedImage->path");
+        }
+        $deletedImage->delete();
         $satellite->delete();
     }
 
@@ -100,8 +125,8 @@ class StarshipController extends Controller
             ]);
 
             $deletedImage = UploadImage::find($satellite->linked_image_id);
-            if (Storage::exists($deletedImage->path)) {
-                Storage::delete($deletedImage->path);
+            if (Storage::exists("/public/$deletedImage->path")) {
+                Storage::delete("/public/$deletedImage->path");
             }
             $deletedImage->delete();
 
@@ -112,6 +137,11 @@ class StarshipController extends Controller
     public function delete_customship(Request $request)
     {
         $customship = ship::find($request->id);
+        $deletedImage = UploadImage::find($customship->linked_image_id);
+        if (Storage::exists("/public/$deletedImage->path")) {
+            Storage::delete("/public/$deletedImage->path");
+        }
+        $deletedImage->delete();
         $customship->delete();
     }
 
@@ -135,6 +165,29 @@ class StarshipController extends Controller
             'linked_user_id'=> 'required',
         ]);
         $customship = ship::find($request->id);
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+
+            $filePath = $file->store('uploads', 'public'); // Stores in 'storage/app/public/uploads'
+            $fileName = $file->getClientOriginalName();
+            $mimeType = $file->getClientMimeType(); // or $file->getMimeType();
+            $fileSize = $file->getSize();
+
+            $uploadImage = UploadImage::create([
+                'file_name' => $fileName,
+                'mime_type' => $mimeType,
+                'path' => $filePath,
+                'size' => $fileSize,
+            ]);
+
+            $deletedImage = UploadImage::find($customship->linked_image_id);
+            if (Storage::exists("/public/$deletedImage->path")) {
+                Storage::delete("/public/$deletedImage->path");
+            }
+            $deletedImage->delete();
+
+            $validatedData['linked_image_id'] = $uploadImage->id;
+        }
         $customship->update($validatedData);
     }
 }

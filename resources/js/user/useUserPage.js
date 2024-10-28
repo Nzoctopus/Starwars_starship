@@ -10,6 +10,10 @@ export default function useUserPage() {
     const [User, setUser] = useState([]);
     const [CreatedStarships, setCreatedStarships] = useState([]);
     const [CreatedSatellites, setCreatedSatellites] = useState([]);
+    const [BannerLink, setBannerLink] = useState(
+        "/images/banner_placeholder.png"
+    );
+    const [PfpLink, setPfpLink] = useState("/images/user_placeholder.jpg");
 
     const navigate = useNavigate();
 
@@ -23,7 +27,9 @@ export default function useUserPage() {
 
                 const user = await getUser();
                 setUser(user);
-
+                if (user.banner_file)
+                    setBannerLink(`/storage/${user.banner_file.path}`);
+                if (user.pfp_file) setPfpLink(`/storage/${user.pfp_file.path}`);
                 // Fetch created satellites and starships simultaneously
                 const [satellites, starships] = await Promise.all([
                     fetchCreatedSatellitesFromUser(user.id),
@@ -32,6 +38,7 @@ export default function useUserPage() {
 
                 console.log("Fetched created satellites:", satellites);
                 console.log("Fetched created starships:", starships);
+                console.log('created', satellites, starships);
 
                 setCreatedSatellites(satellites);
                 setCreatedStarships(starships);
@@ -46,6 +53,7 @@ export default function useUserPage() {
 
     useEffect(() => {
         fetchData();
+        console.log("links", PfpLink, BannerLink);
     }, [navigate]);
-    return { User, CreatedSatellites, CreatedStarships };
+    return { User, CreatedSatellites, CreatedStarships, PfpLink, BannerLink };
 }

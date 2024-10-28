@@ -22,7 +22,7 @@ class Satellite extends Model
         'capacity',
         'class',
         'linked_user_id',
-        'linked_image_id'
+        'linked_image_id',
     ];
     public function user()
     {

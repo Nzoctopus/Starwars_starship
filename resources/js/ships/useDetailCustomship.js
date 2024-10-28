@@ -126,26 +126,26 @@ export default function useDetailCustomship() {
 
     const handleSubmit = async (e, data) => {
         e.preventDefault();
-        // if (isCreating) {
-        //     console.log("sending data ...", data);
-        //     createCustomship(data)
-        //         .then(() => {
-        //             console.log("Created successfully");
-        //             navigate("/starships/list_custom_ship");
-        //         })
-        //         .catch((error) => {
-        //             console.log("error", error);
-        //         });
-        // } else {
-        //     updateCustomship(data)
-        //         .then(() => {
-        //             console.log("shipUpdatedSuccessfully");
-        //             navigate("/starships/list_custom_ship");
-        //         })
-        //         .catch((error) => {
-        //             console.error("error", error);
-        //         });
-        // }
+        if (isCreating) {
+            console.log("sending data ...", data);
+            createCustomship(data)
+                .then(() => {
+                    console.log("Created successfully");
+                    navigate("/starships/list_custom_ship");
+                })
+                .catch((error) => {
+                    console.log("error", error);
+                });
+        } else {
+            updateCustomship(data)
+                .then(() => {
+                    console.log("shipUpdatedSuccessfully");
+                    navigate("/starships/list_custom_ship");
+                })
+                .catch((error) => {
+                    console.error("error", error);
+                });
+        }
         console.log("tried to submit this data", data);
     };
     const handleDelete = async (e, id) => {

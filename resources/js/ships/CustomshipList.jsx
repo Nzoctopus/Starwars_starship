@@ -67,6 +67,19 @@ const Customship_list = () => {
                                     Satellite Deleted
                                 </h2>
                             )}
+                            {item.file ? (
+                                <div className="bg-[#97979736] p-5 text-white font-bold w-[400px]">
+                                    <center>
+                                        <img src={`/storage/${item.file.path}`} />
+                                    </center>
+                                </div>
+                            ) : (
+                                <div className="bg-[#97979736] p-5 text-white font-bold w-[400px]">
+                                    <center>
+                                        <h1>No Images provided</h1>
+                                    </center>
+                                </div>
+                            )}
                         </div>
                         {isLogged ? (
                             <button
