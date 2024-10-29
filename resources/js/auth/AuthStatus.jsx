@@ -7,7 +7,11 @@ export default function AuthStatus() {
             {isLogged ? (
                 <div className="fixed flex flex-wrap gap-3 top-3 right-0 px-3">
                     <div className="w-16 h-16 rounded-full overflow-hidden UserPfp">
+                        {User.pfp_file ?
+                        <img className=" object-cover object-center w-full h-full hover:cursor-pointer" src={`/storage/${User.pfp_file.path}`} alt="userimage" onClick={(e)=>handleClick(e, '/starships/user')}/>
+                        :
                         <img className=" object-cover object-center w-full h-full hover:cursor-pointer" src="/images/user_placeholder.jpg" alt="userimage" onClick={(e)=>handleClick(e, '/starships/user')}/>
+                        }
                     </div>
                     <div>
                         <h1 className="text-white">Connected as {User.name}</h1>

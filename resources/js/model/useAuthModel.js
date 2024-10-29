@@ -23,5 +23,15 @@ export default function useAuthModel() {
         console.log("link = ", "/logout");
         return await axios.post("/logout", {}, { withCredentials: true });
     };
-    return { Login, Register, getUser, Logout, isLoggedIn };
+
+    const updateUser = async (data) => {
+        console.log("link = ", "/modify/user");
+        console.log("final data = ", data);
+        return await axios.post('/modify/user', data, {
+            headers: {
+                'Content-Type': 'multipart/form-data', // Important for file uploads
+            },
+        });
+    };
+    return { Login, Register, getUser, Logout, isLoggedIn, updateUser};
 }

@@ -72,17 +72,17 @@ Route::get('/users/created_satellite/{id}', function($id) {
 });
 
 
-Route::get('/delete/all/customship', function () {
-    ship::truncate();
-});
+// Route::get('/delete/all/customship', function () {
+//     ship::truncate();
+// });
 
-Route::get('/delete/all/satellite', function () {
-    Satellite::truncate();
-});
+// Route::get('/delete/all/satellite', function () {
+//     Satellite::truncate();
+// });
 
-Route::get('/delete/all/image', function () {
-    UploadImage::truncate();
-});
+// Route::get('/delete/all/image', function () {
+//     UploadImage::truncate();
+// });
 
 
 Route::post('/store/satellite', [StarshipController::class, 'store_satellite']);
@@ -97,6 +97,7 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/user', [AuthController::class, 'user'])->middleware('auth');  // Use 'auth' middleware to protect the route
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth');
+Route::post('/modify/user', [AuthController::class, 'modify_user']);
 
 Route::get('/isLoggedIn', function() {
     return response()->json([
