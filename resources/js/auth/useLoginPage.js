@@ -1,10 +1,8 @@
-import { useNavigate } from "react-router-dom";
 import useAuthViewModel from "../model/useAuthViewModel";
 import { useState } from "react";
 
 export default function useLoginPage() {
     const { Login } = useAuthViewModel();
-    const navigate = useNavigate();
 
     const [data, setData] = useState({ email: "", password: "" });
 
@@ -15,7 +13,6 @@ export default function useLoginPage() {
             .then((result) => {
                 console.log("ok");
                 console.log("res", result);
-                navigate("/starships/main_list/1");
                 window.location.reload();
             })
             .catch((error) => {
@@ -28,10 +25,5 @@ export default function useLoginPage() {
         setData({ ...data, [name]: value });
     };
 
-    const handleClick = (e, link) => {
-        e.preventDefault();
-        console.log("clicked to link", link);
-        navigate(link);
-    };
-    return { handleChange, handleSubmit, handleClick, data };
+    return { handleChange, handleSubmit, data };
 }

@@ -1,7 +1,7 @@
 import useRegisterPage from "./useRegisterPage";
 
 export default function RegisterPage() {
-    const { handleChange, handleClick, handleSubmit, data } = useRegisterPage();
+    const { handleChange, handleSubmit, data } = useRegisterPage();
 
     return (
         <div>
@@ -74,20 +74,6 @@ export default function RegisterPage() {
                                 className="text-white bg-gradient-to-bl from-black to-gray-800 hover:bg-gradient-to-b focus:ring-4 focus:outline-none focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
                             >
                                 Submit
-                            </button>
-                        </div>
-                        <div>
-                            <p className="text-white">
-                                Already have an account ?
-                            </p>
-                            <button
-                                type="button"
-                                onClick={(e) =>
-                                    handleClick(e, "/starships/login")
-                                }
-                                className="text-white bg-gradient-to-bl from-black to-gray-800 hover:bg-gradient-to-b focus:ring-4 focus:outline-none focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-                            >
-                                Login
                             </button>
                         </div>
                     </div>

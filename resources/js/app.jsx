@@ -12,6 +12,7 @@ import AuthStatus from "./auth/AuthStatus";
 import LoginPage from "./auth/LoginPage";
 import RegisterPage from "./auth/RegisterPage";
 import UserPage from "./user/UserPage";
+import Protected from "./Protected";
 
 function App() {
     return (
@@ -31,14 +32,6 @@ function App() {
                             element={<CustomshipList />}
                         />
                         <Route
-                            path="/starships/detail_custom_ship/:id"
-                            element={<DetailCustomshipPage />}
-                        />
-                        <Route
-                            path="/starships/detail_satellite/:id"
-                            element={<DetailSatellitePage />}
-                        />
-                        <Route
                             path="/starships/list_custom_satellites"
                             element={<SatelliteList />}
                         />
@@ -54,10 +47,17 @@ function App() {
                             path="/starships/register"
                             element={<RegisterPage />}
                         />
-                        <Route
-                            path="/starships/user"
-                            element={<UserPage />}
-                        />
+                        <Route path="/starships/detail" element={<Protected />}>
+                            <Route path="user" element={<UserPage />} />
+                            <Route
+                                path="ship/:id"
+                                element={<DetailCustomshipPage />}
+                            />
+                            <Route
+                                path="satellite/:id"
+                                element={<DetailSatellitePage />}
+                            />
+                        </Route>
                     </Routes>
                 </div>
             </Router>

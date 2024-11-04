@@ -1,10 +1,8 @@
-import { useNavigate } from "react-router-dom";
 import useAuthViewModel from "../model/useAuthViewModel";
 import { useState } from "react";
 
 export default function useRegisterPage() {
     const { Register } = useAuthViewModel();
-    const navigate = useNavigate();
 
     const [data, setData] = useState({ name: "", email: "", password: "" });
 
@@ -14,7 +12,6 @@ export default function useRegisterPage() {
         Register(data)
             .then((result) => {
                 console.log("ok result", result);
-                navigate("/starships/list_custom_ship");
                 window.location.reload();
             })
             .catch((error) => {
@@ -27,10 +24,5 @@ export default function useRegisterPage() {
         setData({ ...data, [name]: value });
     };
 
-    const handleClick = (e, link) => {
-        e.preventDefault();
-        console.log("clicked to link", link);
-        navigate(link);
-    };
-    return { handleChange, handleSubmit, handleClick, data };
+    return { handleChange, handleSubmit, data };
 }
