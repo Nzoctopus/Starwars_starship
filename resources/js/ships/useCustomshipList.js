@@ -1,24 +1,14 @@
-import { useEffect, useState } from "react";
-import useCustomshipViewModel from "../model/useCustomshipViewModel";
-import useAuthViewModel from "../model/useAuthViewModel";
+import { useContext, useEffect, useState } from "react";
+import { MyContext } from "../MyContext";
 
 export default function useCustomshipList() {
-    const { fetchAllCustomship } = useCustomshipViewModel();
     const [FetchedData, setFetchedData] = useState([]);
     const [isLogged, setIsLogged] = useState(false);
-    const { isLoggedIn } = useAuthViewModel();
-
+    const { Shared } = useContext(MyContext);
     useEffect(() => {
-        fetchAllCustomship().then((result) => {
-            setFetchedData(result);
-            console.log(result);
-            console.log(FetchedData);
-        });
-        isLoggedIn().then((result) => {
-            console.log(result);
-            setIsLogged(result.isLoggedIn);
-        })
-    }, []);
+        setFetchedData(Shared.starships);
+        setIsLogged(Shared.isLogged);
+    }, [Shared]);
 
     return { FetchedData, isLogged };
 }

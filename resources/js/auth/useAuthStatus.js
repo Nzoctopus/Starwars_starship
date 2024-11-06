@@ -1,43 +1,30 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuthViewModel from "../model/useAuthViewModel";
+import { MyContext } from "../MyContext";
 
 export default function useAuthStatus() {
-    const { getUser, Logout, isLoggedIn } = useAuthViewModel();
+    const { Logout } = useAuthViewModel();
     const navigate = useNavigate();
     const [isLogged, setIsLogged] = useState(false);
     const [User, setUser] = useState({ name: "", email: "" });
+    const { Shared } = useContext(MyContext);
     const handleClick = (e, link) => {
         e.preventDefault();
-        console.log("clicked to", link);
         navigate(link);
     };
 
     useEffect(() => {
-        isLoggedIn()
-            .then((result) => {
-                console.log("result", result);
-                if (result.isLoggedIn) {
-                    console.log("connected");
-                    getUser().then((result) => {
-                        setUser(result);
-                    });
-                    setIsLogged(true);
-                } else {
-                    console.log("not connected");
-                    setIsLogged(false);
-                }
-            })
-            .catch((error) => {
-                console.error("error", error);
-            });
-    }, []);
+        setIsLogged(Shared.isLogged);
+        if (Shared.isLogged)
+            setUser(Shared.user);
+    }, [Shared]);
 
     const handleLogout = async (e) => {
         e.preventDefault();
         console.log("cliked");
         Logout()
-            .then((result) => {
+            .then(() => {
                 console.log("logout sucessfull");
                 window.location.reload();
             })

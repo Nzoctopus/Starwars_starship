@@ -3,15 +3,12 @@ import { useState } from "react";
 
 export default function useRegisterPage() {
     const { Register } = useAuthViewModel();
-
     const [data, setData] = useState({ name: "", email: "", password: "" });
 
     const handleSubmit = (e, data) => {
         e.preventDefault();
-        console.log("tried to send data", data);
         Register(data)
-            .then((result) => {
-                console.log("ok result", result);
+            .then(() => {
                 window.location.reload();
             })
             .catch((error) => {

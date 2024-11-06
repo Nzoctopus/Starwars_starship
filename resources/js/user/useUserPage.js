@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import useAuthViewModel from "../model/useAuthViewModel";
 import useUserViewModel from "../model/useUserViewModel";
-import { useNavigate } from "react-router-dom";
+import { MyContext } from "../MyContext";
 
 export default function useUserPage() {
     const { getUser, updateUser } = useAuthViewModel();
@@ -17,8 +17,6 @@ export default function useUserPage() {
     const [defaultBannerLink, setDefaultBannerLink] = useState([]);
     const [PfpLink, setPfpLink] = useState("/images/user_placeholder.jpg");
     const [defaultPfpLink, setDefaultPfpLink] = useState([]);
-
-    const navigate = useNavigate();
 
     const [UserForm, setUserForm] = useState({
         banner: null,
@@ -56,32 +54,32 @@ export default function useUserPage() {
             resetUserForm();
         }
     };
+    const {Shared} = useContext(MyContext)
 
     const fetchData = async () => {
         try {
-            const user = await getUser();
-            setUser(user);
+            const user = Shared.user;
+            setUser(Shared.user);
             setBannerLink(
-                user.banner_file
-                    ? `/storage/${user.banner_file.path}`
+                Shared.user.banner_file
+                    ? `/storage/${Shared.user.banner_file.path}`
                     : "/images/banner_placeholder.png"
             );
             setPfpLink(
-                user.pfp_file
-                    ? `/storage/${user.pfp_file.path}`
+                Shared.user.pfp_file
+                    ? `/storage/${Shared.user.pfp_file.path}`
                     : "/images/user_placeholder.jpg"
             );
             setDefaultBannerLink(
-                user.banner_file
-                    ? `/storage/${user.banner_file.path}`
+                Shared.user.banner_file
+                    ? `/storage/${Shared.user.banner_file.path}`
                     : "/images/banner_placeholder.png"
             );
             setDefaultPfpLink(
-                user.pfp_file
-                    ? `/storage/${user.pfp_file.path}`
+                Shared.user.pfp_file
+                    ? `/storage/${Shared.user.pfp_file.path}`
                     : "/images/user_placeholder.jpg"
             );
-            console.log("user", user);
             const [satellites, starships] = await Promise.all([
                 fetchCreatedSatellitesFromUser(user.id),
                 fetchCreatedStarshipsFromUser(user.id),
@@ -95,7 +93,8 @@ export default function useUserPage() {
 
     useEffect(() => {
         fetchData();
-    }, []);
+        console.log("fetched done", User)
+    }, [Shared]);
 
     useEffect(() => {
         if (UserForm.banner) {
@@ -113,7 +112,7 @@ export default function useUserPage() {
         } else {
             setPfpLink(defaultPfpLink);
         }
-    }, [UserForm]);
+    }, [UserForm, User]);
 
     return {
         User,

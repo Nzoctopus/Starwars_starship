@@ -1,17 +1,17 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useSatelliteViewModel from "../model/useSatelliteViewModel";
 import useAuthViewModel from "../model/useAuthViewModel";
+import { MyContext } from "../MyContext";
+import useGlobalDataProvider from "../useGlobalDataProvider";
 
 export default function useDetailSatellite() {
-    const {
-        fetchSingleSatellite,
-        createSatellite,
-        updateSatellite,
-        deleteSatellite,
-    } = useSatelliteViewModel();
+    const { createSatellite, updateSatellite, deleteSatellite } =
+        useSatelliteViewModel();
+    const { Shared } = useContext(MyContext);
+    const { fetchdata } = useGlobalDataProvider();
 
-    const { isLoggedIn, getUser } = useAuthViewModel();
+    const { getUser } = useAuthViewModel();
     const params = useParams();
     const [FetchError, setFetchError] = useState(false);
     const isCreating = params.id == "create";
@@ -25,7 +25,7 @@ export default function useDetailSatellite() {
             file: null,
         }));
     };
-    
+
     const handleFileChange = (event) => {
         setSatellite((prev) => ({
             ...prev,
@@ -46,36 +46,26 @@ export default function useDetailSatellite() {
         const { name, value } = e.target;
         setSatellite({ ...satellite, [name]: value });
     };
-    console.log(params);
 
     useEffect(() => {
-        isLoggedIn().then((result) => {
-            if (!result.isLoggedIn) {
-                navigate("/starships/login");
-            } else {
-                getUser().then((result) => {
-                    console.log("user id is", result);
-                    setSatellite((prev) => ({
-                        ...prev,
-                        linked_user_id: result.id,
-                    }));
-                });
-            }
-        });
+        console.log("Shared is this", Shared)
         if (!isCreating) {
             console.log("modifying");
-            fetchSingleSatellite(params.id)
-                .then((result) => {
-                    console.log("result", result);
-                    setSatellite(result);
-                    setFetchError(result.error ? true : false);
-                })
-                .catch((error) => {
-                    console.error("error", error);
-                });
+            const target = Shared.satellites.find((obj) => obj.id == params.id);
+            if (!target) {
+                setFetchError(true);
+            }
+            setSatellite(target);
         }
-        console.log(satellite);
-    }, []);
+        setSatellite(prev => ({
+            ...prev,
+            file:null,
+        }))
+        setSatellite(prev => ({
+            ...prev,
+            linked_user_id:Shared.user.id,
+        }))
+    }, [Shared]);
 
     const handleSubmit = async (e, data) => {
         e.preventDefault();
@@ -99,6 +89,7 @@ export default function useDetailSatellite() {
                     console.error("error", error);
                 });
         }
+        fetchdata();
     };
     const handleDelete = async (e, id) => {
         e.preventDefault();

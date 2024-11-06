@@ -25,8 +25,6 @@ export default function useAuthModel() {
     };
 
     const updateUser = async (data) => {
-        console.log("link = ", "/modify/user");
-        console.log("final data = ", data);
         return await axios.post('/modify/user', data, {
             headers: {
                 'Content-Type': 'multipart/form-data', // Important for file uploads

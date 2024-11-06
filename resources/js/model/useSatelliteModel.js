@@ -10,14 +10,10 @@ export default function useSatelliteModel() {
     };
 
     const deleteSatellite = async (id) => {
-        console.log("id = ", id);
-        console.log("send to ", "/delete/satellite");
         return await axios.post("/delete/satellite", { id: id });
     };
 
     const updateSatellite = async (data) => {
-        console.log("link = ", "/modify/satellite");
-        console.log("final data = ", data);
         return await axios.post('/modify/satellite', data, {
             headers: {
                 'Content-Type': 'multipart/form-data', // Important for file uploads
@@ -26,8 +22,6 @@ export default function useSatelliteModel() {
     };
 
     const createSatellite = async (data) => {
-        console.log("link = ", "/store/satellite");
-        console.log("final data = ", data);
         return await axios.post('/store/satellite', data, {
             headers: {
                 'Content-Type': 'multipart/form-data', // Important for file uploads

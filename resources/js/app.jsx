@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
 import "../css/app.css"; // Import Tailwind CSS
 import CustomshipList from "./ships/CustomshipList";
@@ -9,10 +9,9 @@ import DetailCustomshipPage from "./ships/DetailCustomshipPage";
 import DetailSatellitePage from "./satellites/DetailSatellitePage";
 import NavigationButtons from "./NavigationButtons";
 import AuthStatus from "./auth/AuthStatus";
-import LoginPage from "./auth/LoginPage";
-import RegisterPage from "./auth/RegisterPage";
 import UserPage from "./user/UserPage";
 import Protected from "./Protected";
+import GlobalDataProvider from "./GlobalDataProvider";
 
 function App() {
     return (
@@ -39,14 +38,6 @@ function App() {
                             path="/starships/main_list/:page"
                             element={<Starshiplist />}
                         />
-                        <Route
-                            path="/starships/login"
-                            element={<LoginPage />}
-                        />
-                        <Route
-                            path="/starships/register"
-                            element={<RegisterPage />}
-                        />
                         <Route path="/starships/detail" element={<Protected />}>
                             <Route path="user" element={<UserPage />} />
                             <Route
@@ -67,4 +58,5 @@ function App() {
 
 // Render the App component in a specific DOM element
 const root = ReactDOM.createRoot(document.getElementById("app"));
-root.render(<App />);
+
+root.render(<GlobalDataProvider><App /></GlobalDataProvider>);

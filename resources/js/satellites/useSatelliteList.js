@@ -1,24 +1,15 @@
-import { useEffect, useState } from "react";
-import useSatelliteViewModel from "../model/useSatelliteViewModel";
-import useAuthViewModel from "../model/useAuthViewModel";
+import { useContext, useEffect, useState } from "react";
+import { MyContext } from "../MyContext";
 
 export default function useSatelliteList() {
-    const { fetchAllSatellite } = useSatelliteViewModel();
     const [isLogged, setIsLogged] = useState(false);
-    const { isLoggedIn } = useAuthViewModel();
     const [FetchedData, setFetchedData] = useState([]);
-
+    const { Shared } = useContext(MyContext);
     useEffect(() => {
-        fetchAllSatellite().then((result) => {
-            setFetchedData(result);
-            console.log(result);
-            console.log(FetchedData);
-        });
-        isLoggedIn().then((result) => {
-            setIsLogged(result.isLoggedIn);
-            console.log(result);
-        });
-    }, []);
+        setFetchedData(Shared.satellites);
+        setIsLogged(Shared.isLogged);
+        console.log("shared this to satlist", Shared);
+    }, [Shared]);
 
     return { FetchedData, isLogged };
 }

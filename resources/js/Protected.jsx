@@ -1,20 +1,14 @@
-import { useEffect, useState } from "react";
-import useAuthViewModel from "./model/useAuthViewModel";
-import { resolveMotionValue } from "framer-motion";
-import LoginPage from "./auth/LoginPage";
+import { useContext, useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import AuthPage from "./auth/AuthPage";
+import { MyContext } from "./MyContext";
 
 export default function Protected() {
-    const { isLoggedIn } = useAuthViewModel();
     const [Logged, setLogged] = useState(false);
-
+    const { Shared } = useContext(MyContext);
     useEffect(() => {
-        isLoggedIn().then((result) => {
-            setLogged(result.isLoggedIn);
-            console.log(result.isLoggedIn);
-        });
-    }, [LoginPage]);
+        setLogged(Shared.isLogged);
+    }, [Shared]);
 
     return Logged ? <Outlet /> : <AuthPage />;
 }

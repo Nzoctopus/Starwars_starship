@@ -1,24 +1,20 @@
 import { useNavigate, useParams } from "react-router-dom";
 import useCustomshipViewModel from "../model/useCustomshipViewModel";
-import { useEffect, useState } from "react";
-import useSatelliteViewModel from "../model/useSatelliteViewModel";
-import useAuthViewModel from "../model/useAuthViewModel";
+import { useContext, useEffect, useState } from "react";
+import { MyContext } from "../MyContext";
+import useGlobalDataProvider from "../useGlobalDataProvider";
 
 export default function useDetailCustomship() {
-    const {
-        fetchSingleCustomship,
-        createCustomship,
-        updateCustomship,
-        deleteCustomship,
-    } = useCustomshipViewModel();
-    const { fetchAllSatellite } = useSatelliteViewModel();
-    const { isLoggedIn, getUser } = useAuthViewModel();
+    const { createCustomship, updateCustomship, deleteCustomship } =
+        useCustomshipViewModel();
     const params = useParams();
     const [FetchError, setFetchError] = useState(false);
     const isCreating = params.id == "create";
     const Title = isCreating ? "ADD STARSHIP" : "MODIFY STARSHIP";
     const navigate = useNavigate();
     const [satellites, setSatellites] = useState([]);
+    const { fetchdata } = useGlobalDataProvider();
+    const { Shared } = useContext(MyContext);
     const fields = [
         ["name", "text"],
         ["model", "text"],
@@ -60,7 +56,7 @@ export default function useDetailCustomship() {
         starship_class: "",
         linked_satellite_id: "",
         linked_user_id: "",
-        file:null,
+        file: null,
     });
 
     const resetImage = () => {
@@ -69,7 +65,7 @@ export default function useDetailCustomship() {
             file: null,
         }));
     };
-    
+
     const handleFileChange = (event) => {
         setShip((prev) => ({
             ...prev,
@@ -87,47 +83,25 @@ export default function useDetailCustomship() {
     console.log(params);
 
     useEffect(() => {
-        isLoggedIn().then((result) => {
-            if (!result.isLoggedIn) {
-                navigate("/starships/login");
-            } else {
-                getUser().then((result) => {
-                    console.log("user id is", result);
-                    setShip((prev) => ({
-                        ...prev,
-                        linked_user_id: result.id,
-                    }));
-                });
-            }
-        });
-        fetchAllSatellite()
-            .then((result) => {
-                console.log("result", result);
-                setSatellites(result);
-            })
-            .catch((error) => {
-                console.error("error", error);
-            });
         if (!isCreating) {
-            console.log("modifying");
-            fetchSingleCustomship(params.id)
-                .then((result) => {
-                    console.log("result", result);
-                    setShip(result);
-                    setFetchError(result.error ? true : false);
-                })
-                .catch((error) => {
-                    console.error("error", error);
-                });
+            const target = Shared.starships.find((obj) => obj.id == params.id);
+            if (!target) setFetchError(true);
+            setShip(target);
+            setShip((prev) => ({
+                ...prev,
+                file: null,
+            }));
         }
-        console.log("ship", ship);
-    }, []);
-    console.log("satellites", satellites);
+        setShip((prev) => ({
+            ...prev,
+            linked_user_id: Shared.user.id,
+        }));
+        setSatellites(Shared.satellites);
+    }, [Shared]);
 
     const handleSubmit = async (e, data) => {
         e.preventDefault();
         if (isCreating) {
-            console.log("sending data ...", data);
             createCustomship(data)
                 .then(() => {
                     console.log("Created successfully");
@@ -139,7 +113,7 @@ export default function useDetailCustomship() {
         } else {
             updateCustomship(data)
                 .then(() => {
-                    console.log("shipUpdatedSuccessfully");
+                    console.log("ship Updated Successfully");
                     navigate("/starships/list_custom_ship");
                 })
                 .catch((error) => {
@@ -147,11 +121,11 @@ export default function useDetailCustomship() {
                 });
         }
         console.log("tried to submit this data", data);
+        fetchdata();
     };
     const handleDelete = async (e, id) => {
         e.preventDefault();
-        console.log("id = ", id);
-        console.log("cliked");
+        console.log("cliked to delete with id", id);
         deleteCustomship(id)
             .then(() => {
                 console.log("Deleted successfully");
