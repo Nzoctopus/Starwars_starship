@@ -1,14 +1,8 @@
-import { useContext, useEffect, useState } from "react";
-import { MyContext } from "../MyContext";
+import { useAtom } from "jotai";
+import { StarshipListAtom } from "../atoms";
 
 export default function useCustomshipList() {
-    const [FetchedData, setFetchedData] = useState([]);
-    const [isLogged, setIsLogged] = useState(false);
-    const { Shared } = useContext(MyContext);
-    useEffect(() => {
-        setFetchedData(Shared.starships);
-        setIsLogged(Shared.isLogged);
-    }, [Shared]);
+    const [StarshipList] = useAtom(StarshipListAtom);
 
-    return { FetchedData, isLogged };
+    return { FetchedData: StarshipList };
 }

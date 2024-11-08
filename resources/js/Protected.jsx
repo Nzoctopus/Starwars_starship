@@ -1,14 +1,25 @@
-import { useContext, useEffect, useState } from "react";
+import {useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import AuthPage from "./auth/AuthPage";
-import { MyContext } from "./MyContext";
+import { useAtom } from "jotai";
+import { isLoggedAtom } from "./atoms";
+import useConnection from "./useConnetion";
+import EntitiesLoader from "./EntitiesLoader";
 
 export default function Protected() {
-    const [Logged, setLogged] = useState(false);
-    const { Shared } = useContext(MyContext);
+    const [isLogged] = useAtom(isLoggedAtom);
+    const { loadAuthStatus } = useConnection();
     useEffect(() => {
-        setLogged(Shared.isLogged);
-    }, [Shared]);
+        if (!isLogged) {
+            loadAuthStatus();
+        }
+    }, [isLogged]);
 
-    return Logged ? <Outlet /> : <AuthPage />;
+    return isLogged ? (
+        <EntitiesLoader>
+            <Outlet />
+        </EntitiesLoader>
+    ) : (
+        <AuthPage />
+    );
 }

@@ -1,22 +1,33 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import useAuthViewModel from "../model/useAuthViewModel";
 import useUserViewModel from "../model/useUserViewModel";
-import { MyContext } from "../MyContext";
+import { useAtom } from "jotai";
+import { UserDataAtom } from "../atoms";
+import useConnection from "../useConnetion";
 
 export default function useUserPage() {
-    const { getUser, updateUser } = useAuthViewModel();
+    const { updateUser } = useAuthViewModel();
     const { fetchCreatedSatellitesFromUser, fetchCreatedStarshipsFromUser } =
         useUserViewModel();
 
-    const [User, setUser] = useState([]);
+    const [User, setUser] = useAtom(UserDataAtom);
+    const { loadUser } = useConnection();
     const [CreatedStarships, setCreatedStarships] = useState([]);
     const [CreatedSatellites, setCreatedSatellites] = useState([]);
     const [BannerLink, setBannerLink] = useState(
         "/images/banner_placeholder.png"
     );
-    const [defaultBannerLink, setDefaultBannerLink] = useState([]);
+    const [defaultBannerLink, setDefaultBannerLink] = useState(
+        User.banner_file
+            ? `/storage/${User.banner_file.path}`
+            : "/images/banner_placeholder.png"
+    );
     const [PfpLink, setPfpLink] = useState("/images/user_placeholder.jpg");
-    const [defaultPfpLink, setDefaultPfpLink] = useState([]);
+    const [defaultPfpLink, setDefaultPfpLink] = useState(
+        User.pfp_file
+            ? `/storage/${User.pfp_file.path}`
+            : "/images/user_placeholder.jpg"
+    );
 
     const [UserForm, setUserForm] = useState({
         banner: null,
@@ -47,6 +58,7 @@ export default function useUserPage() {
         };
         try {
             await updateUser(FinalForm);
+            loadUser();
             fetchData();
         } catch (error) {
             console.error("Error updating user:", error);
@@ -54,35 +66,12 @@ export default function useUserPage() {
             resetUserForm();
         }
     };
-    const {Shared} = useContext(MyContext)
 
     const fetchData = async () => {
         try {
-            const user = Shared.user;
-            setUser(Shared.user);
-            setBannerLink(
-                Shared.user.banner_file
-                    ? `/storage/${Shared.user.banner_file.path}`
-                    : "/images/banner_placeholder.png"
-            );
-            setPfpLink(
-                Shared.user.pfp_file
-                    ? `/storage/${Shared.user.pfp_file.path}`
-                    : "/images/user_placeholder.jpg"
-            );
-            setDefaultBannerLink(
-                Shared.user.banner_file
-                    ? `/storage/${Shared.user.banner_file.path}`
-                    : "/images/banner_placeholder.png"
-            );
-            setDefaultPfpLink(
-                Shared.user.pfp_file
-                    ? `/storage/${Shared.user.pfp_file.path}`
-                    : "/images/user_placeholder.jpg"
-            );
             const [satellites, starships] = await Promise.all([
-                fetchCreatedSatellitesFromUser(user.id),
-                fetchCreatedStarshipsFromUser(user.id),
+                fetchCreatedSatellitesFromUser(User.id),
+                fetchCreatedStarshipsFromUser(User.id),
             ]);
             setCreatedSatellites(satellites);
             setCreatedStarships(starships);
@@ -90,11 +79,29 @@ export default function useUserPage() {
             console.error("Error fetching data:", error);
         }
     };
-
     useEffect(() => {
+        setBannerLink(
+            User.banner_file
+                ? `/storage/${User.banner_file.path}`
+                : "/images/banner_placeholder.png"
+        );
+        setPfpLink(
+            User.pfp_file
+                ? `/storage/${User.pfp_file.path}`
+                : "/images/user_placeholder.jpg"
+        );
+        setDefaultBannerLink(
+            User.banner_file
+                ? `/storage/${User.banner_file.path}`
+                : "/images/banner_placeholder.png"
+        );
+        setDefaultPfpLink(
+            User.pfp_file
+                ? `/storage/${User.pfp_file.path}`
+                : "/images/user_placeholder.jpg"
+        );
         fetchData();
-        console.log("fetched done", User)
-    }, [Shared]);
+    }, [User]);
 
     useEffect(() => {
         if (UserForm.banner) {
@@ -104,7 +111,6 @@ export default function useUserPage() {
         } else {
             setBannerLink(defaultBannerLink);
         }
-
         if (UserForm.pfp) {
             const pfpURL = URL.createObjectURL(UserForm.pfp);
             setPfpLink(pfpURL);
@@ -112,7 +118,7 @@ export default function useUserPage() {
         } else {
             setPfpLink(defaultPfpLink);
         }
-    }, [UserForm, User]);
+    }, [UserForm]);
 
     return {
         User,

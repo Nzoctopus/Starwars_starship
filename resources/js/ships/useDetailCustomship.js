@@ -1,8 +1,9 @@
 import { useNavigate, useParams } from "react-router-dom";
 import useCustomshipViewModel from "../model/useCustomshipViewModel";
-import { useContext, useEffect, useState } from "react";
-import { MyContext } from "../MyContext";
-import useGlobalDataProvider from "../useGlobalDataProvider";
+import { useEffect, useState } from "react";
+import { useAtom } from "jotai";
+import { SatelliteListAtom, StarshipListAtom, UserDataAtom } from "../atoms";
+import useConnection from "../useConnetion";
 
 export default function useDetailCustomship() {
     const { createCustomship, updateCustomship, deleteCustomship } =
@@ -12,9 +13,10 @@ export default function useDetailCustomship() {
     const isCreating = params.id == "create";
     const Title = isCreating ? "ADD STARSHIP" : "MODIFY STARSHIP";
     const navigate = useNavigate();
-    const [satellites, setSatellites] = useState([]);
-    const { fetchdata } = useGlobalDataProvider();
-    const { Shared } = useContext(MyContext);
+    const [satellites] = useAtom(SatelliteListAtom);
+    const [User] = useAtom(UserDataAtom);
+    const [StarshipList] = useAtom(StarshipListAtom);
+    const { loadStarships } = useConnection();
     const fields = [
         ["name", "text"],
         ["model", "text"],
@@ -78,14 +80,16 @@ export default function useDetailCustomship() {
         if (NumberFields.includes(name))
             setShip({ ...ship, [name]: Number(value) });
         else setShip({ ...ship, [name]: value });
-        console.log("ship", ship);
     };
-    console.log(params);
 
     useEffect(() => {
         if (!isCreating) {
-            const target = Shared.starships.find((obj) => obj.id == params.id);
-            if (!target) setFetchError(true);
+            const target = StarshipList.find((obj) => obj.id == params.id);
+            if (!target) {
+                setFetchError(true);
+            } else {
+                setFetchError(false);
+            }
             setShip(target);
             setShip((prev) => ({
                 ...prev,
@@ -94,10 +98,9 @@ export default function useDetailCustomship() {
         }
         setShip((prev) => ({
             ...prev,
-            linked_user_id: Shared.user.id,
+            linked_user_id: User.id,
         }));
-        setSatellites(Shared.satellites);
-    }, [Shared]);
+    }, []);
 
     const handleSubmit = async (e, data) => {
         e.preventDefault();
@@ -120,8 +123,7 @@ export default function useDetailCustomship() {
                     console.error("error", error);
                 });
         }
-        console.log("tried to submit this data", data);
-        fetchdata();
+        loadStarships();
     };
     const handleDelete = async (e, id) => {
         e.preventDefault();
@@ -134,6 +136,7 @@ export default function useDetailCustomship() {
             .catch((error) => {
                 console.log("error", error);
             });
+        loadStarships();
     };
     return {
         ship,

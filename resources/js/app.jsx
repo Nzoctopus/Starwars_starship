@@ -7,17 +7,17 @@ import SatelliteList from "./satellites/SatelliteList";
 import Starshiplist from "./main_page/Starshiplist";
 import DetailCustomshipPage from "./ships/DetailCustomshipPage";
 import DetailSatellitePage from "./satellites/DetailSatellitePage";
-import NavigationButtons from "./NavigationButtons";
+import NavigationButtons from "./buttons/NavigationButtons";
 import AuthStatus from "./auth/AuthStatus";
 import UserPage from "./user/UserPage";
 import Protected from "./Protected";
-import GlobalDataProvider from "./GlobalDataProvider";
+import WelcomePage from "./WelcomePage";
 
 function App() {
     return (
         <div className="pb-20">
             <div className="sticky top-0 px-4 sm:px-6 lg:px-8 mx-auto sm:text-center bg-gradient-to-b from-black to-transparent h-24">
-                <p className="mt-6 text-[2.5rem] leading-none sm:text-6xl tracking-tight font-bold text-yellow-500">
+                <p className="mt-6 text-[2.5rem] leading-none sm:text-6xl tracking-tight font-bold text-yellow-500" >
                     STARWARS
                 </p>
             </div>
@@ -26,26 +26,27 @@ function App() {
                 <NavigationButtons />
                 <div className="justify-center flex md:flex-row flex-wrap gap-40 pb-20">
                     <Routes>
-                        <Route
-                            path="/starships/list_custom_ship"
-                            element={<CustomshipList />}
-                        />
-                        <Route
-                            path="/starships/list_custom_satellites"
-                            element={<SatelliteList />}
-                        />
-                        <Route
-                            path="/starships/main_list/:page"
-                            element={<Starshiplist />}
-                        />
-                        <Route path="/starships/detail" element={<Protected />}>
-                            <Route path="user" element={<UserPage />} />
+                        <Route path="/welcome" element={<WelcomePage />} />
+                        <Route path="/starships/" element={<Protected />}>
                             <Route
-                                path="ship/:id"
+                                path="list_custom_ship"
+                                element={<CustomshipList />}
+                            />
+                            <Route
+                                path="list_custom_satellites"
+                                element={<SatelliteList />}
+                            />
+                            <Route
+                                path="main_list/:page"
+                                element={<Starshiplist />}
+                            />
+                            <Route path="detail/user" element={<UserPage />} />
+                            <Route
+                                path="detail/ship/:id"
                                 element={<DetailCustomshipPage />}
                             />
                             <Route
-                                path="satellite/:id"
+                                path="detail/satellite/:id"
                                 element={<DetailSatellitePage />}
                             />
                         </Route>
@@ -59,4 +60,4 @@ function App() {
 // Render the App component in a specific DOM element
 const root = ReactDOM.createRoot(document.getElementById("app"));
 
-root.render(<GlobalDataProvider><App /></GlobalDataProvider>);
+root.render(<App />);

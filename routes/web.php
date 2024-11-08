@@ -12,11 +12,15 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 Route::get("/", function () {
-    return redirect('/starships/main_list/1');
+    return redirect('/welcome');
 });
 
 Route::get("/starships/main_list", function () {
     return redirect('/starships/main_list/1');
+});
+
+Route::get('/welcome', function () {
+    return view('body');
 });
 
 Route::get('/starships/{any}', function () {

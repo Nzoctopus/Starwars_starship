@@ -1,11 +1,9 @@
 export default function useAuthModel() {
     const Login = async (data) => {
-        console.log("final data for login ", data);
         return await axios.post("/login", data);
     };
 
     const Register = async (data) => {
-        console.log("final data for registration ", data);
         return await axios.post("/register", data);
     };
 
@@ -20,7 +18,6 @@ export default function useAuthModel() {
     };
 
     const Logout = async () => {
-        console.log("link = ", "/logout");
         return await axios.post("/logout", {}, { withCredentials: true });
     };
 

@@ -9,7 +9,7 @@ export default function useRegisterPage() {
         e.preventDefault();
         Register(data)
             .then(() => {
-                window.location.reload();
+                loadAuthStatus();
             })
             .catch((error) => {
                 console.error("error my g", error);

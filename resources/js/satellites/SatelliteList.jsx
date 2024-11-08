@@ -1,13 +1,11 @@
 import "../../css/app.css"; // Import Tailwind CSS
 import React from "react";
 import useSatelliteList from "./useSatelliteList";
-import useNavigationButtons from "../useNavigationButtons";
 import useTimeViewModel from "../model/useTimeViewModel";
-import useAuthViewModel from "../model/useAuthViewModel";
+import ModifyButton from "../buttons/ModifyButton";
 
 const SatelliteList = () => {
-    const { FetchedData, isLogged } = useSatelliteList();
-    const { handleClick } = useNavigationButtons();
+    const { FetchedData } = useSatelliteList();
     const { getDate, getTime } = useTimeViewModel();
 
     return (
@@ -26,8 +24,14 @@ const SatelliteList = () => {
                             <p>cost : {item.cost}</p>
                             <p>capacity : {item.capacity}</p>
                             <p>class : {item.class}</p>
-                            <p>Created at: {getDate(item.created_at)} at {getTime(item.created_at)} (UTC)</p>
-                            <p>Updated at: {getDate(item.updated_at)} at {getTime(item.updated_at)} (UTC)</p>
+                            <p>
+                                Created at: {getDate(item.created_at)} at{" "}
+                                {getTime(item.created_at)} (UTC)
+                            </p>
+                            <p>
+                                Updated at: {getDate(item.updated_at)} at{" "}
+                                {getTime(item.updated_at)} (UTC)
+                            </p>
                             {item.user ? (
                                 <h1 className="text-white font-bold">
                                     Created by {item.user.name}
@@ -40,7 +44,9 @@ const SatelliteList = () => {
                             {item.file ? (
                                 <div className="bg-[#97979736] p-5 text-white font-bold w-[400px]">
                                     <center>
-                                        <img src={`/storage/${item.file.path}`} />
+                                        <img
+                                            src={`/storage/${item.file.path}`}
+                                        />
                                     </center>
                                 </div>
                             ) : (
@@ -51,23 +57,10 @@ const SatelliteList = () => {
                                 </div>
                             )}
                         </div>
-                        {isLogged ? (
-                            <button
-                                onClick={(e) =>
-                                    handleClick(
-                                        e,
-                                        `/starships/detail/satellite/${item.id}`
-                                    )
-                                }
-                                className="text-white bg-gradient-to-bl from-black to-gray-800 hover:bg-gradient-to-b focus:ring-4 focus:outline-none focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 self-center"
-                            >
-                                Modify Satellite
-                            </button>
-                        ) : (
-                            <div />
-                        )}
+                        <ModifyButton
+                            link={`/starships/detail/satellite/${item.id}`}
+                        />
                     </div>
-
                 </details>
             ))}
         </div>

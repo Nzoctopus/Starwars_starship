@@ -1,15 +1,8 @@
-import { useContext, useEffect, useState } from "react";
-import { MyContext } from "../MyContext";
+import { useAtom } from "jotai";
+import { SatelliteListAtom } from "../atoms";
 
 export default function useSatelliteList() {
-    const [isLogged, setIsLogged] = useState(false);
-    const [FetchedData, setFetchedData] = useState([]);
-    const { Shared } = useContext(MyContext);
-    useEffect(() => {
-        setFetchedData(Shared.satellites);
-        setIsLogged(Shared.isLogged);
-        console.log("shared this to satlist", Shared);
-    }, [Shared]);
+    const [SatelliteList] = useAtom(SatelliteListAtom);
 
-    return { FetchedData, isLogged };
+    return { FetchedData: SatelliteList};
 }

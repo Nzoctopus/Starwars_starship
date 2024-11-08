@@ -1,17 +1,17 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useSatelliteViewModel from "../model/useSatelliteViewModel";
-import useAuthViewModel from "../model/useAuthViewModel";
-import { MyContext } from "../MyContext";
-import useGlobalDataProvider from "../useGlobalDataProvider";
+import { useAtom } from "jotai";
+import { SatelliteListAtom, UserDataAtom } from "../atoms";
+import useConnection from "../useConnetion";
 
 export default function useDetailSatellite() {
     const { createSatellite, updateSatellite, deleteSatellite } =
         useSatelliteViewModel();
-    const { Shared } = useContext(MyContext);
-    const { fetchdata } = useGlobalDataProvider();
+    const [User] = useAtom(UserDataAtom);
+    const [SatelliteList] = useAtom(SatelliteListAtom);
+    const { loadSatellites } = useConnection();
 
-    const { getUser } = useAuthViewModel();
     const params = useParams();
     const [FetchError, setFetchError] = useState(false);
     const isCreating = params.id == "create";
@@ -48,24 +48,23 @@ export default function useDetailSatellite() {
     };
 
     useEffect(() => {
-        console.log("Shared is this", Shared)
         if (!isCreating) {
             console.log("modifying");
-            const target = Shared.satellites.find((obj) => obj.id == params.id);
+            const target = SatelliteList.find((obj) => obj.id == params.id);
             if (!target) {
                 setFetchError(true);
             }
             setSatellite(target);
         }
-        setSatellite(prev => ({
+        setSatellite((prev) => ({
             ...prev,
-            file:null,
-        }))
-        setSatellite(prev => ({
+            file: null,
+        }));
+        setSatellite((prev) => ({
             ...prev,
-            linked_user_id:Shared.user.id,
-        }))
-    }, [Shared]);
+            linked_user_id: User.id,
+        }));
+    }, []);
 
     const handleSubmit = async (e, data) => {
         e.preventDefault();
@@ -89,12 +88,11 @@ export default function useDetailSatellite() {
                     console.error("error", error);
                 });
         }
-        fetchdata();
+        loadSatellites();
     };
     const handleDelete = async (e, id) => {
         e.preventDefault();
         console.log("id = ", id);
-        console.log("cliked");
         deleteSatellite(id)
             .then(() => {
                 console.log("Deleted successfully");
@@ -103,6 +101,7 @@ export default function useDetailSatellite() {
             .catch((error) => {
                 console.log("error", error);
             });
+        loadSatellites();
     };
     return {
         satellite,

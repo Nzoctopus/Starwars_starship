@@ -4,7 +4,7 @@ export default function AuthStatus() {
     const { handleClick, User, isLogged, handleLogout } = useAuthStatus();
     return (
         <div>
-            {isLogged ? (
+            {isLogged && User? (
                 <div className="fixed flex flex-wrap gap-3 top-3 right-0 px-3">
                     <div className="w-16 h-16 rounded-full overflow-hidden UserPfp">
                         {User.pfp_file ? (
