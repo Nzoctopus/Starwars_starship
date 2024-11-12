@@ -5,7 +5,7 @@ import useTimeViewModel from "../model/useTimeViewModel";
 import ModifyButton from "../buttons/ModifyButton";
 
 const Customship_list = () => {
-    const { FetchedData } = useCustomshipList();
+    const { FetchedData, handleFilterInput, handleTagChange, fields } = useCustomshipList();
     const { getDate, getTime } = useTimeViewModel();
 
     return (
@@ -13,6 +13,23 @@ const Customship_list = () => {
             <p className="mt-6 text-[2.5rem] leading-none sm:text-4xl tracking-tight font-bold text-yellow-500 py-5">
                 Customship
             </p>
+            <div className="flex gap-2 mt-5 mb-10">
+                <select
+                    required
+                    defaultValue=""
+                    onChange={handleTagChange}
+                    className="bg-gray-600 rounded px-5 py-2 text-yellow-500 font-bold"
+                >
+                    <option value="">
+                        No Filter
+                    </option>
+                    {fields.map((item, index) => (
+                        <option key={index} value={item}>{item}</option>
+                    ))}
+                    ;
+                </select>
+                <input className="bg-gray-400 rounded px-5 py-2 text-black font-bold" onChange={handleFilterInput}/>
+            </div>
             {FetchedData.map((item, index) => (
                 <details key={index}>
                     <summary className="hover:text-yellow-300 hover:text-xl cursor-pointer font-bold text-lg text-yellow-400 p-3">
