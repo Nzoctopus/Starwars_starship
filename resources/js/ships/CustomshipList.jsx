@@ -5,7 +5,8 @@ import useTimeViewModel from "../model/useTimeViewModel";
 import ModifyButton from "../buttons/ModifyButton";
 
 const Customship_list = () => {
-    const { FetchedData, handleFilterInput, handleTagChange, fields } = useCustomshipList();
+    const { FetchedData, handleFilterInput, handleTagChange, fields , options} =
+        useCustomshipList();
     const { getDate, getTime } = useTimeViewModel();
 
     return (
@@ -20,15 +21,33 @@ const Customship_list = () => {
                     onChange={handleTagChange}
                     className="bg-gray-600 rounded px-5 py-2 text-yellow-500 font-bold"
                 >
-                    <option value="">
-                        No Filter
-                    </option>
+                    <option disabled value="">No Filter</option>
                     {fields.map((item, index) => (
-                        <option key={index} value={item}>{item}</option>
+                        <option key={index} value={item}>
+                            {item}
+                        </option>
                     ))}
                     ;
                 </select>
-                <input className="bg-gray-400 rounded px-5 py-2 text-black font-bold" onChange={handleFilterInput}/>
+                <select
+                    onChange={handleFilterInput}
+                    required
+                    defaultValue=""
+                    className="bg-gray-500 rounded text-yellow-500 font-bold px-10"
+                >
+                    <option value={""}>
+                        No tag
+                    </option>
+                    {options.map((item) => (
+                        <option
+                            key={item}
+                            value={item}
+                            className="text-black font-bold"
+                        >
+                            {item}
+                        </option>
+                    ))}
+                </select>
             </div>
             {FetchedData.map((item, index) => (
                 <details key={index}>

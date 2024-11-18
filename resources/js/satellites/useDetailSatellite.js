@@ -11,13 +11,49 @@ export default function useDetailSatellite() {
     const [User] = useAtom(UserDataAtom);
     const [SatelliteList] = useAtom(SatelliteListAtom);
     const { loadSatellites } = useConnection();
-
     const params = useParams();
     const [FetchError, setFetchError] = useState(false);
     const isCreating = params.id == "create";
     const Title = isCreating ? "ADD SATELLITE" : "MODIFY SATELLITE";
     const navigate = useNavigate();
-    const fields = ["name", "model", "cost", "capacity", "class"];
+
+    const model = [
+        "Death_Star",
+        "Executor_Station",
+        "Starkiller_Base",
+        "Tantive_IV_Satellite",
+        "Yavin_Sentinel",
+        "Endor_Station",
+        "Coruscant_Observer",
+        "Kessel_Miner",
+        "Mustafar_Probe",
+        "Alderaan_Scanner",
+    ];
+
+    const classes = [
+        "Battle_Station",
+        "Spy_Network",
+        "Mining_Satellite",
+        "Communication_Hub",
+        "Astrocartographic_Scanner",
+        "Military_Orbital",
+        "Scientific_Researcher",
+        "Galactic_Surveillance",
+        "Trade_Beacon",
+        "Planet_Destroyer",
+    ];
+    const cost = [
+        "500000",
+        "750000",
+        "900000",
+        "1000000",
+        "1250000",
+        "1500000",
+        "2000000",
+        "2500000",
+        "3000000",
+        "4000000",
+    ];
 
     const resetImage = () => {
         setSatellite((prev) => ({
@@ -45,6 +81,7 @@ export default function useDetailSatellite() {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setSatellite({ ...satellite, [name]: value });
+        console.log("change", satellite);
     };
 
     useEffect(() => {
@@ -107,12 +144,14 @@ export default function useDetailSatellite() {
         satellite,
         handleChange,
         Title,
-        fields,
         handleSubmit,
         handleDelete,
         FetchError,
         isCreating,
         resetImage,
         handleFileChange,
+        model,
+        classes,
+        cost,
     };
 }

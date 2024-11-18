@@ -11,24 +11,16 @@ export const filterStarshipListAtom = atom((get) => {
     const filterField = get(filterFieldAtom);
     const filterValue = get(filterValueAtom);
 
-    return !starshipList || !filterField || !filterValue
-        ? []
-        : starshipList.filter(
-              (obj) =>
-                  obj[filterField] &&
-                  String(obj[filterField]).includes(filterValue)
-          );
+    return !filterValue
+        ? starshipList
+        : starshipList.filter((obj) => obj[filterField].includes(filterValue));
 });
 export const filterSatelliteListAtom = atom((get) => {
     const satellites = get(SatelliteListAtom);
     const filterField = get(filterFieldAtom);
     const filterValue = get(filterValueAtom);
 
-    return !satellites || !filterField || !filterValue
-        ? []
-        : satellites.filter(
-              (obj) =>
-                  obj[filterField] &&
-                  String(obj[filterField]).includes(filterValue)
-          );
+    return !filterValue
+        ? satellites
+        : satellites.filter((obj) => String(obj[filterField]).includes(filterValue));
 });

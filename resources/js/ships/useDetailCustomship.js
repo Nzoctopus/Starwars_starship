@@ -17,22 +17,6 @@ export default function useDetailCustomship() {
     const [User] = useAtom(UserDataAtom);
     const [StarshipList] = useAtom(StarshipListAtom);
     const { loadStarships } = useConnection();
-    const fields = [
-        ["name", "text"],
-        ["model", "text"],
-        ["manufacturer", "text"],
-        ["cost", "number"],
-        ["length", "number"],
-        ["max_atmo_speed", "number"],
-        ["crew", "number"],
-        ["passengers", "number"],
-        ["cargo_capacity", "number"],
-        ["consumables", "text"],
-        ["hyperdrive_rating", "text"],
-        ["mglt", "number"],
-        ["starship_class", "text"],
-    ];
-
     const NumberFields = [
         "cost",
         "length",
@@ -42,6 +26,45 @@ export default function useDetailCustomship() {
         "cargo_capacity",
         "mglt",
     ];
+
+    const models = [
+        "Imperial I-Class Star Destroyer",
+        "TIE Fighter",
+        "X-Wing (T-65)",
+        "Y-Wing (BTL-A4)",
+        "A-Wing",
+        "Mon Calamari Star Cruiser (MC80)",
+        "Lucrehulk-Class Battleship",
+        "Providence-Class Dreadnought",
+        "Venator-Class Star Destroyer",
+        "ARC-170 Starfighter",
+    ];
+    const manufacturers = [
+        "Kuat Drive Yards",
+        "Sienar Fleet Systems",
+        "Incom Corporation",
+        "Corellian Engineering Corporation",
+        "Mon Calamari Shipyards",
+        "Hoersch-Kessel Drive",
+        "Rothana Heavy Engineering",
+        "Baktoid Armor Workshop",
+        "Slayn & Korpil",
+        "FreiTek Inc",
+    ];
+    const mglt = ["10", "20", "30", "40", "50", "60", "70", "80", "90"];
+    const starship_classes = [
+        "Star Destroyer",
+        "Corvette",
+        "Frigate",
+        "Fighter",
+        "Bomber",
+        "Transport",
+        "Battleship",
+        "Dreadnought",
+        "Interceptor",
+        "Cruiser",
+    ];
+
     const [ship, setShip] = useState({
         name: "",
         model: "",
@@ -80,6 +103,7 @@ export default function useDetailCustomship() {
         if (NumberFields.includes(name))
             setShip({ ...ship, [name]: Number(value) });
         else setShip({ ...ship, [name]: value });
+        console.log("changed", ship);
     };
 
     useEffect(() => {
@@ -142,7 +166,6 @@ export default function useDetailCustomship() {
         ship,
         handleChange,
         Title,
-        fields,
         handleSubmit,
         handleDelete,
         FetchError,
@@ -150,5 +173,9 @@ export default function useDetailCustomship() {
         satellites,
         resetImage,
         handleFileChange,
+        models,
+        manufacturers,
+        starship_classes,
+        mglt,
     };
 }

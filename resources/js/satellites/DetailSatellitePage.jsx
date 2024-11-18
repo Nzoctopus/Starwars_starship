@@ -5,13 +5,15 @@ export default function DetailSatellitePage() {
         satellite,
         handleChange,
         Title,
-        fields,
         handleSubmit,
         FetchError,
         handleDelete,
         handleFileChange,
         isCreating,
         resetImage,
+        model,
+        cost,
+        classes,
     } = useDetailSatellite();
 
     if (FetchError)
@@ -25,28 +27,130 @@ export default function DetailSatellitePage() {
             <h1 className="mt-6 text-[2.5rem] leading-none sm:text-4xl tracking-tight font-bold text-yellow-500 py-5 text-center">
                 {Title}
             </h1>
-            <form onSubmit={(e) => handleSubmit(e, satellite)} encType="multipart/form-data">
+            <form
+                onSubmit={(e) => handleSubmit(e, satellite)}
+                encType="multipart/form-data"
+            >
                 <table className="table-auto border-separate border-spacing-2 bg-[#53535331]">
                     <tbody>
-                        {fields.map((item, index) => (
-                            <tr key={index}>
-                                <th className="text-white bg-[#97979736] rounded">
-                                    <label htmlFor={item}>{item}</label>
-                                </th>
-                                <td className="py-2 bg-[#9e9e9e21] rounded">
-                                    <input
-                                        id={item}
-                                        type="text"
-                                        placeholder={item}
-                                        onChange={handleChange}
-                                        name={item}
-                                        defaultValue={satellite[item]}
-                                        required
-                                        className="bg-transparent text-white"
-                                    />
-                                </td>
-                            </tr>
-                        ))}
+                        <tr>
+                            <th className="text-white bg-[#97979736] rounded">
+                                <label htmlFor="name">NAME</label>
+                            </th>
+                            <td className="py-2 bg-[#9e9e9e21] rounded">
+                                <input
+                                    id="name"
+                                    type="text"
+                                    placeholder="name"
+                                    onChange={handleChange}
+                                    name="name"
+                                    defaultValue={satellite["name"]}
+                                    required
+                                    className="bg-transparent text-white"
+                                />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th className="text-white bg-[#97979736] rounded">
+                                <label htmlFor="capacity">CAPACITY</label>
+                            </th>
+                            <td className="py-2 bg-[#9e9e9e21] rounded">
+                                <input
+                                    id="capacity"
+                                    type="number"
+                                    placeholder="capacity"
+                                    onChange={handleChange}
+                                    name="capacity"
+                                    defaultValue={satellite["capacity"]}
+                                    required
+                                    className="bg-transparent text-white"
+                                />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th className="text-white bg-[#97979736] rounded">
+                                <label htmlFor="model">MODEL</label>
+                            </th>
+                            <td className="py-2 bg-[#9e9e9e21] rounded">
+                                <select
+                                    id="model"
+                                    name="model"
+                                    onChange={handleChange}
+                                    required
+                                    defaultValue=""
+                                    className="bg-transparent text-yellow-500 font-bold"
+                                >
+                                    <option disabled value="">
+                                        Select an option
+                                    </option>
+                                    {model.map((item) => (
+                                        <option
+                                            key={item}
+                                            value={item}
+                                            className="text-black font-bold"
+                                        >
+                                            {item}
+                                        </option>
+                                    ))}
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th className="text-white bg-[#97979736] rounded">
+                                <label htmlFor="cost">COST</label>
+                            </th>
+                            <td className="py-2 bg-[#9e9e9e21] rounded">
+                                <select
+                                    id="cost"
+                                    name="cost"
+                                    onChange={handleChange}
+                                    required
+                                    defaultValue=""
+                                    className="bg-transparent text-yellow-500 font-bold"
+                                >
+                                    <option disabled value="">
+                                        Select an option
+                                    </option>
+                                    {cost.map((item) => (
+                                        <option
+                                            key={item}
+                                            value={item}
+                                            className="text-black font-bold"
+                                        >
+                                            {`${item} credits`}
+                                        </option>
+                                    ))}
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th className="text-white bg-[#97979736] rounded">
+                                <label htmlFor="class">CLASS</label>
+                            </th>
+                            <td className="py-2 bg-[#9e9e9e21] rounded">
+                                <select
+                                    id="class"
+                                    name="class"
+                                    onChange={handleChange}
+                                    required
+                                    defaultValue=""
+                                    className="bg-transparent text-yellow-500 font-bold"
+                                >
+                                    <option disabled value="">
+                                        Select an option
+                                    </option>
+                                    {classes.map((item) => (
+                                        <option
+                                            key={item}
+                                            value={item}
+                                            className="text-black font-bold"
+                                        >
+                                            {item}
+                                        </option>
+                                    ))}
+                                </select>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
                 <div className="pt-10 pb-5">
@@ -64,13 +168,19 @@ export default function DetailSatellitePage() {
                         hidden
                         name="file"
                     />
-                    <button type="button" onClick={resetImage} className="px-5 pb-10 text-white font-bold sm:text-xl">
+                    <button
+                        type="button"
+                        onClick={resetImage}
+                        className="px-5 pb-10 text-white font-bold sm:text-xl"
+                    >
                         Remove Image
                     </button>
                     {satellite.file ? (
                         <div className="bg-[#97979736] p-5 text-white font-bold w-[400px]">
                             <center>
-                                <img src={URL.createObjectURL(satellite.file)} />
+                                <img
+                                    src={URL.createObjectURL(satellite.file)}
+                                />
                             </center>
                         </div>
                     ) : (
