@@ -49,19 +49,25 @@ export default function useSatelliteList() {
         "3000000",
         "4000000",
     ];
+
+    const faction = ["Galactic Empire", "Rebel Alliance"];
     const select_tab = {
         model: model,
         class: classes,
         cost: cost,
+        faction: faction,
     };
     const handleTagChange = (e) => {
         const { value } = e.target;
         setFilterField(value);
         setOptions(select_tab[value] || []);
+        setFilterValue(null);
     };
     const handleFilterInput = (e) => {
         const { value } = e.target;
         setFilterValue(value);
+        if (value == "Rebel Alliance") setFilterValue(1);
+        if (value == "Galactic Empire") setFilterValue(2);
     };
 
     useEffect(() => {
@@ -69,7 +75,7 @@ export default function useSatelliteList() {
         setFilterField(null);
     }, []);
 
-    const fields = ["model", "cost", "class"];
+    const fields = ["model", "cost", "class", "faction"];
 
     return {
         FetchedData: filteredList,

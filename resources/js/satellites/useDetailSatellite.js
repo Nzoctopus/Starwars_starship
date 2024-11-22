@@ -16,7 +16,21 @@ export default function useDetailSatellite() {
     const isCreating = params.id == "create";
     const Title = isCreating ? "ADD SATELLITE" : "MODIFY SATELLITE";
     const navigate = useNavigate();
+    let preset_obj = {};
 
+    const preset = [
+        { model: "Death_Star", speed: 5, size: 50 },
+        { model: "Executor_Station", speed: 9, size: 45 },
+        { model: "Starkiller_Base", speed: 4, size: 50 },
+        { model: "Tantive_IV_Satellite", speed: 8, size: 30 },
+        { model: "Yavin_Sentinel", speed: 6, size: 25 },
+        { model: "Endor_Station", speed: 2, size: 20 },
+        { model: "Coruscant_Observer", speed: 3, size: 25 },
+        { model: "Kessel_Miner", speed: 1, size: 22 },
+        { model: "Mustafar_Probe", speed: 7, size: 20 },
+        { model: "Alderaan_Scanner", speed: 2, size: 23 },
+    ];
+    
     const model = [
         "Death_Star",
         "Executor_Station",
@@ -75,18 +89,28 @@ export default function useDetailSatellite() {
         cost: "",
         capacity: "",
         class: "",
+        posX: "",
+        posY: "",
+        targetX: "",
+        targetY: "",
+        size:0,
+        speed:0,
+        faction:0,
         file: null,
     });
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setSatellite({ ...satellite, [name]: value });
-        console.log("change", satellite);
+        if (name == "model") {
+            preset_obj = preset.find(item => item.model == value);
+            setSatellite({ ...satellite, ["size"]: preset_obj.size, ["speed"]: preset_obj.speed, ["model"]: preset_obj.model});
+        }
+        console.log("modif", satellite);
     };
 
     useEffect(() => {
         if (!isCreating) {
-            console.log("modifying");
             const target = SatelliteList.find((obj) => obj.id == params.id);
             if (!target) {
                 setFetchError(true);
@@ -109,7 +133,6 @@ export default function useDetailSatellite() {
         if (isCreating) {
             createSatellite(data)
                 .then(() => {
-                    console.log("Created successfully");
                     navigate("/starships/list_custom_satellites");
                 })
                 .catch((error) => {
@@ -118,7 +141,6 @@ export default function useDetailSatellite() {
         } else {
             updateSatellite(data)
                 .then(() => {
-                    console.log("satellite Updated Successfully");
                     navigate("/starships/list_custom_satellites");
                 })
                 .catch((error) => {
@@ -132,7 +154,6 @@ export default function useDetailSatellite() {
         console.log("id = ", id);
         deleteSatellite(id)
             .then(() => {
-                console.log("Deleted successfully");
                 navigate("/starships/list_custom_satellites");
             })
             .catch((error) => {

@@ -69,6 +69,60 @@ export default function DetailSatellitePage() {
                         </tr>
                         <tr>
                             <th className="text-white bg-[#97979736] rounded">
+                                <label htmlFor="posX">Start Position</label>
+                            </th>
+                            <td className="py-2 bg-[#9e9e9e21] rounded">
+                                <input
+                                    id="posX"
+                                    type="number"
+                                    placeholder="X"
+                                    onChange={handleChange}
+                                    name="posX"
+                                    defaultValue={satellite["posX"]}
+                                    required
+                                    className="bg-gray-500 py-2 rounded text-white m-2 placeholder:text-center"
+                                />
+                                <input
+                                    id="posY"
+                                    type="number"
+                                    placeholder="Y"
+                                    onChange={handleChange}
+                                    name="posY"
+                                    defaultValue={satellite["posY"]}
+                                    required
+                                    className="bg-gray-500 py-2 mr-2 rounded text-white placeholder:text-center"
+                                />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th className="text-white bg-[#97979736] rounded">
+                                <label htmlFor="targetX">Target Position</label>
+                            </th>
+                            <td className="py-2 bg-[#9e9e9e21] rounded">
+                                <input
+                                    id="targetX"
+                                    type="number"
+                                    placeholder="X"
+                                    onChange={handleChange}
+                                    name="targetX"
+                                    defaultValue={satellite["targetX"]}
+                                    required
+                                    className="bg-gray-500 py-2 rounded text-white m-2 placeholder:text-center"
+                                />
+                                <input
+                                    id="targetY"
+                                    type="number"
+                                    placeholder="Y"
+                                    onChange={handleChange}
+                                    name="targetY"
+                                    defaultValue={satellite["targetY"]}
+                                    required
+                                    className="bg-gray-500 py-2 mr-2 rounded text-white placeholder:text-center"
+                                />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th className="text-white bg-[#97979736] rounded">
                                 <label htmlFor="model">MODEL</label>
                             </th>
                             <td className="py-2 bg-[#9e9e9e21] rounded">
@@ -148,6 +202,33 @@ export default function DetailSatellitePage() {
                                             {item}
                                         </option>
                                     ))}
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th className="text-white bg-[#97979736] rounded">
+                                <label htmlFor="faction">FACTION</label>
+                            </th>
+                            <td className="py-2 bg-[#9e9e9e21] rounded">
+                                <select
+                                    id="faction"
+                                    name="faction"
+                                    onChange={handleChange}
+                                    required
+                                    defaultValue=""
+                                    className="bg-transparent text-yellow-500 font-bold"
+                                >
+                                    <option disabled value="">
+                                        Select a faction
+                                    </option>
+                                    <option
+                                        value={1}
+                                        className="text-black font-bold"
+                                    >Rebel Alliance</option>
+                                    <option
+                                        value={2}
+                                        className="text-black font-bold"
+                                    >Galactic Empire</option>
                                 </select>
                             </td>
                         </tr>

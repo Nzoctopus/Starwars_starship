@@ -23,6 +23,13 @@ class Satellite extends Model
         'class',
         'linked_user_id',
         'linked_image_id',
+        'posX',
+        'posY',
+        'targetX',
+        'targetY',
+        'size',
+        'speed',
+        'faction',
     ];
     public function user()
     {

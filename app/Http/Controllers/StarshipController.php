@@ -61,7 +61,14 @@ class StarshipController extends Controller
             'capacity' => 'required|integer',
             'class' => 'required|string|max:255',
             'linked_user_id' => 'required',
-            'file' => 'nullable|file|mimes:jpg,png,jpeg,pdf|max:4096'
+            'file' => 'nullable|file|mimes:jpg,png,jpeg,pdf|max:4096',
+            'posX' => 'nullable|integer',
+            'posY' => 'nullable|integer',
+            'targetX' => 'nullable|integer',
+            'targetY' => 'nullable|integer',
+            'size' => 'nullable|integer',
+            'speed' => 'nullable|integer',
+            'faction' => 'nullable|integer',
         ]);
         
         if ($request->hasFile('file')) {
@@ -90,10 +97,12 @@ class StarshipController extends Controller
     {
         $satellite = Satellite::find($request->id);
         $deletedImage = UploadImage::find($satellite->linked_image_id);
-        if (Storage::exists("/public/$deletedImage->path")) {
-            Storage::delete("/public/$deletedImage->path");
+        if ($deletedImage) {
+            if (Storage::exists("/public/$deletedImage->path")) {
+                Storage::delete("/public/$deletedImage->path");
+            }
+            $deletedImage->delete();
         }
-        $deletedImage->delete();
         $satellite->delete();
     }
 
@@ -106,7 +115,14 @@ class StarshipController extends Controller
             'capacity' => 'required|integer',
             'class' => 'required|string|max:255',
             'linked_user_id'=> 'required',
-            'file' => 'nullable|file|mimes:jpg,png,jpeg,pdf|max:4096'
+            'file' => 'nullable|file|mimes:jpg,png,jpeg,pdf|max:4096',
+            'posX' => 'nullable|integer',
+            'posY' => 'nullable|integer',
+            'targetX' => 'nullable|integer',
+            'targetY' => 'nullable|integer',
+            'size' => 'nullable|integer',
+            'speed' => 'nullable|integer',
+            'faction' => 'nullable|integer',
         ]);
         $satellite = Satellite::find($request->id);
         if ($request->hasFile('file')) {
@@ -138,10 +154,12 @@ class StarshipController extends Controller
     {
         $customship = ship::find($request->id);
         $deletedImage = UploadImage::find($customship->linked_image_id);
-        if (Storage::exists("/public/$deletedImage->path")) {
-            Storage::delete("/public/$deletedImage->path");
+        if ($deletedImage) {
+            if (Storage::exists("/public/$deletedImage->path")) {
+                Storage::delete("/public/$deletedImage->path");
+            }
+            $deletedImage->delete();
         }
-        $deletedImage->delete();
         $customship->delete();
     }
 
