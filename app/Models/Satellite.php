@@ -21,5 +21,23 @@ class Satellite extends Model
         'cost',
         'capacity',
         'class',
+        'linked_user_id',
+        'linked_image_id',
+        'posX',
+        'posY',
+        'targetX',
+        'targetY',
+        'size',
+        'speed',
+        'faction',
     ];
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'linked_user_id');
+    }
+
+    public function file()
+    {
+        return $this->belongsTo(UploadImage::class, 'linked_image_id');
+    }
 }

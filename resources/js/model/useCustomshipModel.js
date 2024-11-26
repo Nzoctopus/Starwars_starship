@@ -10,21 +10,23 @@ export default function useCustomshipModel() {
     };
 
     const deleteCustomship = async (id) => {
-        console.log("id = ", id);
-        console.log("send to ", "/delete/customship");
         return await axios.post("/delete/customship", { id: id });
     };
 
     const updateCustomship = async (data) => {
-        console.log("link = ", "/modify/customship");
-        console.log("final data = ", data);
-        return await axios.post("/modify/customship", data);
+        return await axios.post('/modify/customship', data, {
+            headers: {
+                'Content-Type': 'multipart/form-data', // Important for file uploads
+            },
+        });
     };
 
     const createCustomship = async (data) => {
-        console.log("link = ", "/store/ship");
-        console.log("final data = ", data);
-        return await axios.post("/store/ship", data);
+        return await axios.post('/store/ship', data, {
+            headers: {
+                'Content-Type': 'multipart/form-data', // Important for file uploads
+            },
+        });
     };
 
     return {

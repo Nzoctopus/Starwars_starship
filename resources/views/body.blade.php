@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @viteReactRefresh
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/app.jsx', ])
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Starwars</title>
 </head>
 <body>
